@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="h-lvh bg-gray-100">
+    <html lang="en" className="h-lvh bg-white">
       <body className={`h-full ${inter.className}`}>
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <AuthProvider>

@@ -27,7 +27,7 @@ interface Candle {
     weight: number
     status: 'DRAFT' | 'ACTIVE' | 'DISCONTINUED'
     imageUrl: string | null
-    recipes: any[]
+    recipes: number[]
 }
 
 export default function CandlesPage() {

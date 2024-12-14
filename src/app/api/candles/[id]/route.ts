@@ -19,6 +19,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
         }
         return NextResponse.json(candle)
     } catch (error) {
+        console.error('Error fetching candle:', error)
         return NextResponse.json({ error: 'Error fetching candle' }, { status: 500 })
     }
 }
@@ -40,6 +41,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
         })
         return NextResponse.json(candle)
     } catch (error) {
+        console.error('Error updating candle:', error)
         return NextResponse.json({ error: 'Error updating candle' }, { status: 500 })
     }
 }
@@ -58,6 +60,7 @@ export async function DELETE(request: Request, props: { params: Promise<{ id: st
         })
         return NextResponse.json({ message: 'Candle and related recipes deleted' })
     } catch (error) {
+        console.error('Error deleting candle:', error)
         return NextResponse.json({ error: 'Error deleting candle' }, { status: 500 })
     }
 }

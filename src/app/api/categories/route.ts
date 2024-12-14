@@ -22,6 +22,7 @@ export async function POST(request: Request) {
         })
         return NextResponse.json(category)
     } catch (error) {
+        console.error('Error creating category:', error)
         return NextResponse.json({ error: 'Error creating category' }, { status: 500 })
     }
 }

@@ -15,6 +15,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
         }
         return NextResponse.json(category)
     } catch (error) {
+        console.error('Error fetching category:', error)
         return NextResponse.json({ error: 'Error fetching category' }, { status: 500 })
     }
 }
@@ -32,6 +33,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
         })
         return NextResponse.json(category)
     } catch (error) {
+        console.error('Error updating category:', error)
         return NextResponse.json({ error: 'Error updating category' }, { status: 500 })
     }
 }

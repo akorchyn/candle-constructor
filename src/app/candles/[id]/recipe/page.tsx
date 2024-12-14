@@ -42,7 +42,7 @@ export default function RecipePage() {
     useEffect(() => {
         if (candle?.recipes) {
             setRecipe(
-                candle.recipes.map(recipe => ({
+                candle.recipes.map((recipe: RecipeItem) => ({
                     materialId: recipe.materialId,
                     amountUsed: recipe.amountUsed
                 }))
@@ -80,11 +80,11 @@ export default function RecipePage() {
     }
 
     // Split materials into active and inactive
-    const activeMaterials = materials?.filter(material =>
+    const activeMaterials = materials?.filter((material: Material) =>
         recipe.some(item => item.materialId === material.id && item.amountUsed > 0)
     ) || []
 
-    const inactiveMaterialsByCategory = materials?.reduce((acc, material) => {
+    const inactiveMaterialsByCategory = materials?.reduce((acc: Record<number, Material[]>, material: Material) => {
         // Skip if material is active in recipe
         if (recipe.some(item => item.materialId === material.id && item.amountUsed > 0)) {
             return acc
@@ -106,7 +106,7 @@ export default function RecipePage() {
     }
 
     const totalCost = recipe.reduce((sum, item) => {
-        const material = materials?.find(m => m.id === item.materialId)
+        const material = materials?.find((m: Material) => m.id === item.materialId)
         return sum + (material?.pricePerUnit || 0) * item.amountUsed
     }, 0)
 
@@ -141,7 +141,7 @@ export default function RecipePage() {
                         Current Recipe ({activeMaterials.length} items)
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {activeMaterials.map((material) => (
+                        {activeMaterials.map((material: Material) => (
                             <RecipeMaterialCard
                                 key={material.id}
                                 {...material}
@@ -160,10 +160,10 @@ export default function RecipePage() {
                 {Object.entries(inactiveMaterialsByCategory).map(([categoryId, categoryMaterials]) => (
                     <div key={categoryId}>
                         <h3 className="text-md font-medium text-gray-700 mb-4">
-                            {materials?.find(m => m.categoryId === Number(categoryId))?.category?.name}
+                            {materials?.find((m: Material) => m.categoryId === Number(categoryId))?.category?.name}
                         </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {categoryMaterials.map((material) => (
+                            {(categoryMaterials as Material[]).map((material: Material) => (
                                 <RecipeMaterialCard
                                     key={material.id}
                                     {...material}

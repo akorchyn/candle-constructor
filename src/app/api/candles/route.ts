@@ -14,6 +14,7 @@ export async function GET() {
         })
         return NextResponse.json(candles)
     } catch (error) {
+        console.error('Error fetching candles:', error)
         return NextResponse.json({ error: 'Error fetching candles' }, { status: 500 })
     }
 }
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
         })
         return NextResponse.json(candle)
     } catch (error) {
+        console.error('Error creating candle:', error)
         return NextResponse.json({ error: 'Error creating candle' }, { status: 500 })
     }
 }

@@ -12,6 +12,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
         }
         return NextResponse.json(material)
     } catch (error) {
+        console.error('Error fetching material:', error)
         return NextResponse.json({ error: 'Error fetching material' }, { status: 500 })
     }
 }
@@ -35,6 +36,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
         })
         return NextResponse.json(material)
     } catch (error) {
+        console.error('Error updating material:', error)
         return NextResponse.json({ error: 'Error updating material' }, { status: 500 })
     }
 }
@@ -47,6 +49,7 @@ export async function DELETE(request: Request, props: { params: Promise<{ id: st
         })
         return NextResponse.json({ message: 'Material deleted' })
     } catch (error) {
+        console.error('Error deleting material:', error)
         return NextResponse.json({ error: 'Error deleting material' }, { status: 500 })
     }
 }

@@ -17,6 +17,7 @@ export async function POST(request: Request) {
         })
         return NextResponse.json(recipe)
     } catch (error) {
+        console.error('Error creating recipe:', error)
         return NextResponse.json({ error: 'Error creating recipe' }, { status: 500 })
     }
 }

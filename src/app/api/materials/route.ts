@@ -10,6 +10,7 @@ export async function GET() {
         })
         return NextResponse.json(materials)
     } catch (error) {
+        console.error('Error fetching materials:', error)
         return NextResponse.json({ error: 'Error fetching materials' }, { status: 500 })
     }
 }
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
         })
         return NextResponse.json(material)
     } catch (error) {
+        console.error('Error creating material:', error)
         return NextResponse.json({ error: 'Error creating material' }, { status: 500 })
     }
 }

@@ -21,7 +21,7 @@ interface Category {
     id: number
     name: string
     description: string | null
-    materials: any[]
+    materials: number[]
 }
 
 interface CategoryFormData {

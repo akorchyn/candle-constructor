@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export default function Navigation({ links, mobile }: { links: any[], mobile: boolean }) {
+export default function Navigation({ links, mobile }: { links: Url[], mobile: boolean }) {
     const page = usePathname();
 
     return (

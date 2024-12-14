@@ -79,6 +79,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
 
         return NextResponse.json(candle)
     } catch (error) {
+        console.error('Error fetching candle:', error)
         return NextResponse.json(
             { error: 'Error fetching candle' },
             { status: 500 }

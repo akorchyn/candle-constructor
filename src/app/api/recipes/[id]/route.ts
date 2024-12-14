@@ -17,6 +17,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
         })
         return NextResponse.json(recipe)
     } catch (error) {
+        console.error('Error updating recipe:', error)
         return NextResponse.json({ error: 'Error updating recipe' }, { status: 500 })
     }
 }
@@ -29,6 +30,7 @@ export async function DELETE(request: Request, props: { params: Promise<{ id: st
         })
         return NextResponse.json({ message: 'Recipe deleted' })
     } catch (error) {
+        console.error('Error deleting recipe:', error)
         return NextResponse.json({ error: 'Error deleting recipe' }, { status: 500 })
     }
 }

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 15, "column": 0}, "map": {"version":3,"sources":["file:///home/yurtur/projects/candle-constructor/src/providers/query-provider.tsx"],"sourcesContent":["'use client'\n\nimport { QueryClient, QueryClientProvider } from '@tanstack/react-query'\nimport { ReactNode, useState } from 'react'\n\nexport default function QueryProvider({ children }: { children: ReactNode }) {\n    const [queryClient] = useState(() => new QueryClient({\n        defaultOptions: {\n            queries: {\n                staleTime: 5 * 1000, // Consider data stale after 5 seconds\n                refetchOnWindowFocus: false,\n            },\n        },\n    }))\n\n    return (\n        <QueryClientProvider client={queryClient}>\n            {children}\n        </QueryClientProvider>\n    )\n}\n"],"names":[],"mappings":";;;;AAGA;AADA;AAAA;AAFA;;;;AAKe,SAAS,cAAc,EAAE,QAAQ,EAA2B;IACvE,MAAM,CAAC,YAAY,GAAG,CAAA,GAAA,qMAAA,CAAA,WAAQ,AAAD,EAAE,IAAM,IAAI,6KAAA,CAAA,cAAW,CAAC;YACjD,gBAAgB;gBACZ,SAAS;oBACL,WAAW,IAAI;oBACf,sBAAsB;gBAC1B;YACJ;QACJ;IAEA,qBACI,8OAAC,sLAAA,CAAA,sBAAmB;QAAC,QAAQ;kBACxB;;;;;;AAGb"}},
+    {"offset": {"line": 44, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

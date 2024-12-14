@@ -2,6 +2,6 @@
   "version": 3,
   "sources": [],
   "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/yurtur/projects/candle-constructor/src/app/page.tsx"],"sourcesContent":["\"use client\"\n\nimport { redirect } from 'next/navigation'\n\nexport default function HomePage() {\n  redirect('/candles')\n}\n"],"names":[],"mappings":";;;AAEA;AAFA;;AAIe,SAAS;IACtB,CAAA,GAAA,kIAAA,CAAA,WAAQ,AAAD,EAAE;AACX"}},
-    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/yurtur/projects/candle-constructor/src/app/page.tsx"],"sourcesContent":["\"use client\"\n\nimport { useSession } from 'next-auth/react'\nimport { redirect } from 'next/navigation'\n\nexport default function HomePage() {\n  const session = useSession()\n  redirect('/candles')\n}\n"],"names":[],"mappings":";;;AAEA;AACA;AAHA;;;AAKe,SAAS;IACtB,MAAM,UAAU,CAAA,GAAA,8IAAA,CAAA,aAAU,AAAD;IACzB,CAAA,GAAA,kIAAA,CAAA,WAAQ,AAAD,EAAE;AACX"}},
+    {"offset": {"line": 19, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
 }

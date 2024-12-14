@@ -684,13 +684,6 @@ function RecipePage() {
             router.push('/candles');
         }
     });
-    const materialsByCategory = materials?.reduce((acc, material)=>{
-        if (!acc[material.categoryId]) {
-            acc[material.categoryId] = [];
-        }
-        acc[material.categoryId].push(material);
-        return acc;
-    }, {}) || {};
     const handleAmountChange = (materialId, amount)=>{
         setRecipe((prev)=>{
             const existing = prev.find((item)=>item.materialId === materialId);
@@ -715,13 +708,26 @@ function RecipePage() {
     const getAmountForMaterial = (materialId)=>{
         return recipe.find((item)=>item.materialId === materialId)?.amountUsed || 0;
     };
+    // Split materials into active and inactive
+    const activeMaterials = materials?.filter((material)=>recipe.some((item)=>item.materialId === material.id && item.amountUsed > 0)) || [];
+    const inactiveMaterialsByCategory = materials?.reduce((acc, material)=>{
+        // Skip if material is active in recipe
+        if (recipe.some((item)=>item.materialId === material.id && item.amountUsed > 0)) {
+            return acc;
+        }
+        if (!acc[material.categoryId]) {
+            acc[material.categoryId] = [];
+        }
+        acc[material.categoryId].push(material);
+        return acc;
+    }, {}) || {};
     if (isLoadingCandle || isLoadingMaterials) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "text-center p-6",
             children: "Loading..."
         }, void 0, false, {
             fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-            lineNumber: 91,
+            lineNumber: 101,
             columnNumber: 16
         }, this);
     }
@@ -731,10 +737,14 @@ function RecipePage() {
             children: "Candle not found"
         }, void 0, false, {
             fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-            lineNumber: 95,
+            lineNumber: 105,
             columnNumber: 16
         }, this);
     }
+    const totalCost = recipe.reduce((sum, item)=>{
+        const material = materials?.find((m)=>m.id === item.materialId);
+        return sum + (material?.pricePerUnit || 0) * item.amountUsed;
+    }, 0);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
         children: [
@@ -751,21 +761,24 @@ function RecipePage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                lineNumber: 102,
+                                lineNumber: 117,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-sm text-gray-500 mt-1",
-                                children: "Add materials and specify quantities"
-                            }, void 0, false, {
+                                children: [
+                                    "Total Cost: $",
+                                    totalCost.toFixed(2)
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                lineNumber: 105,
+                                lineNumber: 120,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                        lineNumber: 101,
+                        lineNumber: 116,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -777,7 +790,7 @@ function RecipePage() {
                                 children: "Cancel"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                lineNumber: 110,
+                                lineNumber: 125,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -786,71 +799,125 @@ function RecipePage() {
                                 children: updateMutation.isPending ? 'Saving...' : 'Save Recipe'
                             }, void 0, false, {
                                 fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                lineNumber: 113,
+                                lineNumber: 128,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                        lineNumber: 109,
+                        lineNumber: 124,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                lineNumber: 100,
+                lineNumber: 115,
                 columnNumber: 13
+            }, this),
+            activeMaterials.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-lg font-medium text-gray-900",
+                        children: [
+                            "Current Recipe (",
+                            activeMaterials.length,
+                            " items)"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                        lineNumber: 140,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4",
+                        children: activeMaterials.map((material)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$materials$2f$RecipeMaterialCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["RecipeMaterialCard"], {
+                                ...material,
+                                amount: getAmountForMaterial(material.id),
+                                onAmountChange: handleAmountChange
+                            }, material.id, false, {
+                                fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                                lineNumber: 145,
+                                columnNumber: 29
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                        lineNumber: 143,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$separator$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Separator"], {
+                        className: "my-8"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                        lineNumber: 153,
+                        columnNumber: 21
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                lineNumber: 139,
+                columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "space-y-8",
-                children: Object.entries(materialsByCategory).map(([categoryId, categoryMaterials])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                className: "text-lg font-medium text-gray-900 mb-4",
-                                children: materials?.find((m)=>m.categoryId === Number(categoryId))?.category?.name
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                lineNumber: 125,
-                                columnNumber: 25
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4",
-                                children: categoryMaterials.map((material)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$materials$2f$RecipeMaterialCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["RecipeMaterialCard"], {
-                                        ...material,
-                                        amount: getAmountForMaterial(material.id),
-                                        onAmountChange: handleAmountChange
-                                    }, material.id, false, {
-                                        fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                        lineNumber: 130,
-                                        columnNumber: 33
-                                    }, this))
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                lineNumber: 128,
-                                columnNumber: 25
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$separator$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Separator"], {
-                                className: "my-8"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                                lineNumber: 138,
-                                columnNumber: 25
-                            }, this)
-                        ]
-                    }, categoryId, true, {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-lg font-medium text-gray-900",
+                        children: "Available Materials"
+                    }, void 0, false, {
                         fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                        lineNumber: 124,
-                        columnNumber: 21
-                    }, this))
-            }, void 0, false, {
+                        lineNumber: 159,
+                        columnNumber: 17
+                    }, this),
+                    Object.entries(inactiveMaterialsByCategory).map(([categoryId, categoryMaterials])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                    className: "text-md font-medium text-gray-700 mb-4",
+                                    children: materials?.find((m)=>m.categoryId === Number(categoryId))?.category?.name
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                                    lineNumber: 162,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4",
+                                    children: categoryMaterials.map((material)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$materials$2f$RecipeMaterialCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["RecipeMaterialCard"], {
+                                            ...material,
+                                            amount: getAmountForMaterial(material.id),
+                                            onAmountChange: handleAmountChange
+                                        }, material.id, false, {
+                                            fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                                            lineNumber: 167,
+                                            columnNumber: 33
+                                        }, this))
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                                    lineNumber: 165,
+                                    columnNumber: 25
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$separator$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Separator"], {
+                                    className: "my-8"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                                    lineNumber: 175,
+                                    columnNumber: 25
+                                }, this)
+                            ]
+                        }, categoryId, true, {
+                            fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
+                            lineNumber: 161,
+                            columnNumber: 21
+                        }, this))
+                ]
+            }, void 0, true, {
                 fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-                lineNumber: 122,
+                lineNumber: 158,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/candles/[id]/recipe/page.tsx",
-        lineNumber: 99,
+        lineNumber: 114,
         columnNumber: 9
     }, this);
 }

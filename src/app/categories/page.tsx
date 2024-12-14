@@ -100,31 +100,33 @@ export default function CategoriesPage() {
                 ) : !categories?.length ? (
                     <div className="p-6 text-center text-gray-500">No categories found</div>
                 ) : (
-                    categories.map((category) => (
-                        <div key={category.id} className="p-6 flex justify-between items-center">
-                            <div>
-                                <h3 className="text-lg font-medium text-gray-900">{category.name}</h3>
-                                {category.description && (
-                                    <p className="mt-1 text-sm text-gray-500">{category.description}</p>
-                                )}
+                    <div className='space-y-2 w-full'>
+                        {categories.map((category) => (
+                            <div key={category.id} className="p-6 flex justify-between items-center">
+                                <div>
+                                    <h3 className="text-lg font-medium text-gray-900">{category.name}</h3>
+                                    {category.description && (
+                                        <p className="mt-1 text-sm text-gray-500">{category.description}</p>
+                                    )}
+                                </div>
+                                <div className="flex gap-2">
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setCategoryToEdit(category)}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setCategoryToDelete(category)}
+                                        className="text-red-600 hover:text-red-700"
+                                    >
+                                        Delete
+                                    </Button>
+                                </div>
                             </div>
-                            <div className="flex gap-2">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setCategoryToEdit(category)}
-                                >
-                                    Edit
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setCategoryToDelete(category)}
-                                    className="text-red-600 hover:text-red-700"
-                                >
-                                    Delete
-                                </Button>
-                            </div>
-                        </div>
-                    ))
+                        ))}
+                    </div>
                 )}
             </div>
 

@@ -18,7 +18,7 @@ runtime.loadChunk("server/chunks/ssr/node_modules_@effect_platform_dist_esm_b6c6
 runtime.loadChunk("server/chunks/ssr/node_modules_uploadthing_6b7c38._.js");
 runtime.loadChunk("server/chunks/ssr/node_modules_97339b._.js");
 runtime.loadChunk("server/chunks/ssr/[root of the server]__9ae652._.js");
-runtime.loadChunk("server/chunks/ssr/[root of the server]__9a168d._.css");
+runtime.loadChunk("server/chunks/ssr/[root of the server]__4ca415._.css");
 runtime.loadChunk("server/chunks/ssr/node_modules_ce97a5._.js");
 runtime.loadChunk("server/chunks/ssr/node_modules_next_dist_client_components_forbidden-error_b4e556.js");
 runtime.loadChunk("server/chunks/ssr/node_modules_next_dist_client_components_unauthorized-error_d758e6.js");

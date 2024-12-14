@@ -1,42 +1,46 @@
 "use client"
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import Link from 'next/link';
+import Navigation from './Navigation'
+import { Tag, Receipt, PuzzlePiece } from "@phosphor-icons/react";
+import { Button } from '../ui/button';
+import { signOut, useSession } from 'next-auth/react';
 
 export default function Header() {
-    const pathname = usePathname()
+    const { data: session } = useSession();
 
-    const navigation = [
-        { name: 'Categories', href: '/categories' },
-        { name: 'Components', href: '/components' },
-        { name: 'Candles', href: '/candles' }
-    ]
-
+    const navigation = [{ title: 'Categories', href: '/categories', icon: <Tag size={28} /> },
+    { title: 'Components', href: '/components', icon: <PuzzlePiece size={28} /> },
+    { title: 'Candles', href: '/candles', icon: <Receipt size={28} /> }];
     return (
-        <header className="bg-white shadow">
-            <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 justify-between">
-                    <div className="flex">
-                        <div className="flex flex-shrink-0 items-center">
-                            <span className="text-xl font-bold text-gray-800">Candle Maker</span>
+        <>
+            <div className="w-full sticky top-0 z-50 px-4 border-b">
+                <div className="flex w-full items-center justify-between bg-white py-[8px] md:gap-x-[24px] gap-x-[16px]">
+                    <Link className="md:w-1/4  flex flex-shrink-0 items-center" href="/">
+                        <span className="text-xl font-bold text-gray-800">Candle Maker</span>
+                    </Link>
+                    {session &&
+                        <div className="md:flex hidden w-1/2">
+                            <Navigation
+                                links={navigation} mobile={false}
+                            />
                         </div>
-                        <div className="ml-6 flex space-x-8">
-                            {navigation.map((item) => (
-                                <Link
-                                    key={item.name}
-                                    href={item.href}
-                                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${pathname === item.href
-                                        ? 'border-indigo-500 text-gray-900'
-                                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                                        }`}
-                                >
-                                    {item.name}
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
+                    }
+                    {session &&
+                        <Button variant="default" className='w-1/4' onClick={() => signOut()}>
+                            Logout
+                        </Button>
+                    }
                 </div>
-            </nav>
-        </header>
+
+            </div>
+
+
+            {session && (
+                <div className="md:hidden flex w-full">
+                    <Navigation links={navigation} mobile={true} />
+                </div>
+            )}
+        </>
     )
 }

@@ -59,14 +59,6 @@ export default function RecipePage() {
         }
     })
 
-    const materialsByCategory = materials?.reduce((acc, material) => {
-        if (!acc[material.categoryId]) {
-            acc[material.categoryId] = []
-        }
-        acc[material.categoryId].push(material)
-        return acc
-    }, {} as Record<number, Material[]>) || {}
-
     const handleAmountChange = (materialId: number, amount: number) => {
         setRecipe(prev => {
             const existing = prev.find(item => item.materialId === materialId)
@@ -87,6 +79,24 @@ export default function RecipePage() {
         return recipe.find(item => item.materialId === materialId)?.amountUsed || 0
     }
 
+    // Split materials into active and inactive
+    const activeMaterials = materials?.filter(material =>
+        recipe.some(item => item.materialId === material.id && item.amountUsed > 0)
+    ) || []
+
+    const inactiveMaterialsByCategory = materials?.reduce((acc, material) => {
+        // Skip if material is active in recipe
+        if (recipe.some(item => item.materialId === material.id && item.amountUsed > 0)) {
+            return acc
+        }
+
+        if (!acc[material.categoryId]) {
+            acc[material.categoryId] = []
+        }
+        acc[material.categoryId].push(material)
+        return acc
+    }, {} as Record<number, Material[]>) || {}
+
     if (isLoadingCandle || isLoadingMaterials) {
         return <div className="text-center p-6">Loading...</div>
     }
@@ -94,6 +104,11 @@ export default function RecipePage() {
     if (!candle) {
         return <div className="text-center p-6 text-red-500">Candle not found</div>
     }
+
+    const totalCost = recipe.reduce((sum, item) => {
+        const material = materials?.find(m => m.id === item.materialId)
+        return sum + (material?.pricePerUnit || 0) * item.amountUsed
+    }, 0)
 
     return (
         <div className="space-y-6">
@@ -103,7 +118,7 @@ export default function RecipePage() {
                         Recipe for {candle.name}
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">
-                        Add materials and specify quantities
+                        Total Cost: ${totalCost.toFixed(2)}
                     </p>
                 </div>
                 <div className="flex gap-2">
@@ -119,12 +134,34 @@ export default function RecipePage() {
                 </div>
             </div>
 
+            {/* Active Materials Section */}
+            {activeMaterials.length > 0 && (
+                <div className="space-y-4">
+                    <h2 className="text-lg font-medium text-gray-900">
+                        Current Recipe ({activeMaterials.length} items)
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {activeMaterials.map((material) => (
+                            <RecipeMaterialCard
+                                key={material.id}
+                                {...material}
+                                amount={getAmountForMaterial(material.id)}
+                                onAmountChange={handleAmountChange}
+                            />
+                        ))}
+                    </div>
+                    <Separator className="my-8" />
+                </div>
+            )}
+
+            {/* Available Materials Section */}
             <div className="space-y-8">
-                {Object.entries(materialsByCategory).map(([categoryId, categoryMaterials]) => (
+                <h2 className="text-lg font-medium text-gray-900">Available Materials</h2>
+                {Object.entries(inactiveMaterialsByCategory).map(([categoryId, categoryMaterials]) => (
                     <div key={categoryId}>
-                        <h2 className="text-lg font-medium text-gray-900 mb-4">
+                        <h3 className="text-md font-medium text-gray-700 mb-4">
                             {materials?.find(m => m.categoryId === Number(categoryId))?.category?.name}
-                        </h2>
+                        </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {categoryMaterials.map((material) => (
                                 <RecipeMaterialCard

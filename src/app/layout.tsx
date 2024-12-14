@@ -23,7 +23,7 @@ export default function RootLayout({
         <AuthProvider>
           <QueryProvider>
             <div className="h-full">
-              <main>
+              <main className="flex flex-col items-center justify-between">
                 <Header />
                 <article className="w-full min-[1440px]:w-[1440px] flex flex-col items-center justify-between gap-[56px]">
                   <div className="flex w-full flex-col justify-between">

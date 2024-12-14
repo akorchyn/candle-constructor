@@ -27,7 +27,7 @@ export default function Header() {
                         </div>
                     }
                     {session &&
-                        <Button variant="default" className='w-1/4' onClick={() => signOut()}>
+                        <Button variant="default" className='w-1/4 max-w-[100px]' onClick={() => signOut()}>
                             Logout
                         </Button>
                     }

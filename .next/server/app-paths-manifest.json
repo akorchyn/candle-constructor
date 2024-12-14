@@ -1,0 +1,7 @@
+{
+  "/candles/page": "app/candles/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/candles/route": "app/api/candles/route.js",
+  "/api/uploadthing/route": "app/api/uploadthing/route.js",
+  "/api/candles/[id]/route": "app/api/candles/[id]/route.js"
+}

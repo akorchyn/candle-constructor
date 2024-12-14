@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/yurtur/projects/candle-constructor/src/app/page.tsx"],"sourcesContent":["\"use client\"\n\nimport { redirect } from 'next/navigation'\n\nexport default function HomePage() {\n  redirect('/candles')\n}\n"],"names":[],"mappings":";;;AAEA;AAFA;;AAIe,SAAS;IACtB,CAAA,GAAA,qIAAA,CAAA,WAAQ,AAAD,EAAE;AACX;KAFwB"}},
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

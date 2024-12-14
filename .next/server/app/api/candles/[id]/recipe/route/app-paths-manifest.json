@@ -1,0 +1,3 @@
+{
+  "/api/candles/[id]/recipe/route": "app/api/candles/[id]/recipe/route.js"
+}

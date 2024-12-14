@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/yurtur/projects/candle-constructor/src/app/page.tsx"],"sourcesContent":["\"use client\"\n\nimport { useSession } from 'next-auth/react'\nimport { redirect } from 'next/navigation'\n\nexport default function HomePage() {\n  const session = useSession()\n  redirect('/candles')\n}\n"],"names":[],"mappings":";;;AAEA;AACA;;AAHA;;;AAKe,SAAS;;IACtB,MAAM,UAAU,CAAA,GAAA,iJAAA,CAAA,aAAU,AAAD;IACzB,CAAA,GAAA,qIAAA,CAAA,WAAQ,AAAD,EAAE;AACX;GAHwB;;QACN,iJAAA,CAAA,aAAU;;;KADJ"}},
-    {"offset": {"line": 32, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

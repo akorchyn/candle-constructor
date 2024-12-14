@@ -25,7 +25,6 @@ export default function LoginPage() {
             redirect: false,
         })
 
-        console.log({ response })
 
         if (response?.error) {
             setError('Invalid credentials')
@@ -35,6 +34,7 @@ export default function LoginPage() {
 
         setIsLoading(false)
         router.push('/')
+        router.refresh()
     }
 
     return (

@@ -28,6 +28,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
                 units: json.units,
                 pricePerUnit: json.pricePerUnit,
                 imageUrl: json.imageUrl,
+                purchaseUrl: json.purchaseUrl,
                 categoryId: json.categoryId,
             },
             include: {

@@ -24,6 +24,7 @@ export async function POST(request: Request) {
                 units: json.units,
                 pricePerUnit: json.pricePerUnit,
                 imageUrl: json.imageUrl,
+                purchaseUrl: json.purchaseUrl,
                 categoryId: json.categoryId,
             },
             include: {

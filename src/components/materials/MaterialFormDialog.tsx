@@ -17,6 +17,7 @@ interface MaterialFormData {
     pricePerUnit: number
     imageUrl?: string | null
     categoryId: number
+    purchaseUrl: string
 }
 
 interface MaterialFormDialogProps {
@@ -39,7 +40,8 @@ export function MaterialFormDialog({
         units: '',
         pricePerUnit: 0,
         imageUrl: '',
-        categoryId: 0
+        categoryId: 0,
+        purchaseUrl: ''
     })
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -144,6 +146,16 @@ export function MaterialFormDialog({
                         />
                     </div>
 
+                    <div className="space-y-2">
+                        <Label htmlFor="purchaseUrl">Purchase URL</Label>
+                        <Input
+                            id="purchaseUrl"
+                            value={formData.purchaseUrl}
+                            onChange={(e) => setFormData(prev => ({ ...prev, purchaseUrl: e.target.value }))}
+                            required
+                        />
+                    </div>
+
                     <div className="flex justify-end space-x-2">
                         <Button variant="outline" type="button" onClick={onClose}>
                             Cancel
@@ -154,6 +166,6 @@ export function MaterialFormDialog({
                     </div>
                 </form>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     )
 }

@@ -1,5 +1,6 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { ShoppingCart } from 'lucide-react'
 
 interface MaterialCardProps {
     id: number
@@ -7,6 +8,7 @@ interface MaterialCardProps {
     units: string
     pricePerUnit: number
     imageUrl?: string | null
+    purchaseUrl?: string
     onEdit: (id: number) => void
     onDelete: (id: number) => void
 }
@@ -17,6 +19,7 @@ export function MaterialCard({
     units,
     pricePerUnit,
     imageUrl,
+    purchaseUrl,
     onEdit,
     onDelete
 }: MaterialCardProps) {
@@ -34,6 +37,17 @@ export function MaterialCard({
                         <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
                             No image
                         </div>
+                    )}
+                    {purchaseUrl && (
+                        <a
+                            href={purchaseUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="absolute top-2 right-2 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition-all 
+                duration-200 hover:scale-110 group"
+                        >
+                            <ShoppingCart className="h-4 w-4 text-gray-600 group-hover:text-indigo-600" />
+                        </a>
                     )}
                 </div>
             </div>

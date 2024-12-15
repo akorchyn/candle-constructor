@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { MaterialCard } from '@/components/materials/MaterialCard'
 import { MaterialFormDialog } from '@/components/materials/MaterialFormDialog'
 import { fetchMaterials, fetchCategories, createMaterial, updateMaterial, deleteMaterial } from '@/lib/api'
+import { Search } from '@/components/ui/search'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -32,10 +33,13 @@ interface Category {
     description: string | null
 }
 
+const MATERIAL_SEARCH_FIELDS = ['name'] as (keyof Material)[]
+
 export default function ComponentsPage() {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
     const [materialToEdit, setMaterialToEdit] = useState<Material | null>(null)
     const [materialToDelete, setMaterialToDelete] = useState<Material | null>(null)
+    const [searchResults, setSearchResults] = useState<Material[]>([])
 
     const queryClient = useQueryClient()
 
@@ -43,6 +47,12 @@ export default function ComponentsPage() {
         queryKey: ['materials'],
         queryFn: fetchMaterials
     })
+
+    useEffect(() => {
+        if (materials) {
+            setSearchResults(materials)
+        }
+    }, [materials])
 
     const { data: categories, isLoading: isLoadingCategories } = useQuery<Category[]>({
         queryKey: ['categories'],
@@ -71,7 +81,11 @@ export default function ComponentsPage() {
         }
     })
 
-    const materialsByCategory = materials?.reduce((acc, material) => {
+    const handleSearch = useCallback((results: Material[]) => {
+        setSearchResults(results)
+    }, [])
+
+    const materialsByCategory = searchResults?.reduce((acc, material) => {
         const categoryId = material.categoryId
         if (!acc[categoryId]) {
             acc[categoryId] = []
@@ -108,6 +122,15 @@ export default function ComponentsPage() {
                 <Button onClick={() => setIsCreateDialogOpen(true)}>
                     Add Component
                 </Button>
+            </div>
+
+            <div className="mb-6">
+                <Search
+                    data={materials || []}
+                    searchFields={MATERIAL_SEARCH_FIELDS}
+                    onFilter={handleSearch}
+                    placeholder="Search components..."
+                />
             </div>
 
             <div className="space-y-8">

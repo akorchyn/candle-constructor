@@ -1,11 +1,12 @@
 // src/app/categories/page.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { fetchCategories, createCategory, updateCategory, deleteCategory } from '@/lib/api'
 import { CategoryFormDialog } from '@/components/categories/CategoryFormDialog'
+import { Search } from '@/components/ui/search'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -29,16 +30,29 @@ interface CategoryFormData {
     description?: string | null
 }
 
+const CATEGORY_SEARCH_FIELDS = ['name', 'description'] as (keyof Category)[]
+
 export default function CategoriesPage() {
     const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null)
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
     const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null)
+    const [searchResults, setSearchResults] = useState<Category[]>([])
     const queryClient = useQueryClient()
 
     const { data: categories, isLoading, isError, error } = useQuery<Category[]>({
         queryKey: ['categories'],
         queryFn: fetchCategories
     })
+
+    useEffect(() => {
+        if (categories) {
+            setSearchResults(categories)
+        }
+    }, [categories])
+
+    const handleSearch = useCallback((results: Category[]) => {
+        setSearchResults(results)
+    }, [])
 
     const createMutation = useMutation({
         mutationFn: (data: CategoryFormData) => createCategory(data),
@@ -88,6 +102,15 @@ export default function CategoriesPage() {
                 <Button onClick={() => setIsCreateDialogOpen(true)}>
                     Add Category
                 </Button>
+            </div>
+
+            <div className="mb-6">
+                <Search
+                    data={categories || []}
+                    searchFields={CATEGORY_SEARCH_FIELDS}
+                    onFilter={handleSearch}
+                    placeholder="Search categories..."
+                />
             </div>
 
             <div className="bg-white shadow rounded-lg divide-y divide-gray-200">

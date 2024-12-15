@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { CandleCard } from '@/components/candles/CandleCard'
@@ -18,6 +18,7 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation'
+import { Search } from '@/components/ui/search'
 
 interface Candle {
     id: number
@@ -30,12 +31,15 @@ interface Candle {
     recipes: number[]
 }
 
+const CANDLE_SEARCH_FIELDS = ['name', 'description'] as (keyof Candle)[]
+
 export default function CandlesPage() {
     const router = useRouter()
     const [activeTab, setActiveTab] = useState('all')
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
     const [candleToEdit, setCandleToEdit] = useState<Candle | null>(null)
     const [candleToDelete, setCandleToDelete] = useState<Candle | null>(null)
+    const [searchResults, setSearchResults] = useState<Candle[]>([])
 
     const queryClient = useQueryClient()
 
@@ -66,7 +70,7 @@ export default function CandlesPage() {
         }
     })
 
-    const filteredCandles = candles?.filter(candle => {
+    const filteredCandles = searchResults.filter(candle => {
         if (activeTab === 'all') return true
         return candle.status.toLowerCase() === activeTab
     })
@@ -93,6 +97,11 @@ export default function CandlesPage() {
     const handleManageRecipe = (id: number) => {
         router.push(`/candles/${id}/recipe`)
     }
+
+    const handleSearch = useCallback((results: Candle[]) => {
+        setSearchResults(results)
+    }, [])
+
     if (isLoading) {
         return <div className="text-center p-6">Loading...</div>
     }
@@ -104,6 +113,15 @@ export default function CandlesPage() {
                 <Button onClick={() => setIsCreateDialogOpen(true)}>
                     Add Candle
                 </Button>
+            </div>
+
+            <div className="mb-6">
+                <Search
+                    data={candles || []}
+                    searchFields={CANDLE_SEARCH_FIELDS}
+                    onFilter={handleSearch}
+                    placeholder="Search candles..."
+                />
             </div>
 
             <Tabs defaultValue="all" className="mb-6">

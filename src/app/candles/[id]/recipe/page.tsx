@@ -1,13 +1,14 @@
 // src/app/candles/[id]/recipe/page.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { RecipeMaterialCard } from '@/components/materials/RecipeMaterialCard'
 import { fetchCandle, fetchMaterials, updateCandleRecipe } from '@/lib/api'
 import { useParams, useRouter } from 'next/navigation'
 import { Separator } from "@/components/ui/separator"
+import { Search } from '@/components/ui/search'
 
 interface Material {
     id: number
@@ -23,11 +24,14 @@ interface RecipeItem {
     amountUsed: number
 }
 
+const MATERIAL_SEARCH_FIELDS = ['name'] as (keyof Material)[]
+
 export default function RecipePage() {
     const params = useParams()
     const router = useRouter()
     const queryClient = useQueryClient()
     const [recipe, setRecipe] = useState<RecipeItem[]>([])
+    const [searchResults, setSearchResults] = useState<Material[]>([])
 
     const { data: candle, isLoading: isLoadingCandle } = useQuery({
         queryKey: ['candle', params.id],
@@ -49,6 +53,12 @@ export default function RecipePage() {
             )
         }
     }, [candle])
+
+    useEffect(() => {
+        if (materials) {
+            setSearchResults(materials)
+        }
+    }, [materials])
 
     const updateMutation = useMutation({
         mutationFn: (data: RecipeItem[]) =>
@@ -79,12 +89,16 @@ export default function RecipePage() {
         return recipe.find(item => item.materialId === materialId)?.amountUsed || 0
     }
 
+    const handleSearch = useCallback((results: Material[]) => {
+        setSearchResults(results)
+    }, [])
+
     // Split materials into active and inactive
-    const activeMaterials = materials?.filter((material: Material) =>
+    const activeMaterials = searchResults?.filter((material: Material) =>
         recipe.some(item => item.materialId === material.id && item.amountUsed > 0)
     ) || []
 
-    const inactiveMaterialsByCategory = materials?.reduce((acc: Record<number, Material[]>, material: Material) => {
+    const inactiveMaterialsByCategory = searchResults?.reduce((acc: Record<number, Material[]>, material: Material) => {
         // Skip if material is active in recipe
         if (recipe.some(item => item.materialId === material.id && item.amountUsed > 0)) {
             return acc
@@ -132,6 +146,15 @@ export default function RecipePage() {
                         {updateMutation.isPending ? 'Saving...' : 'Save Recipe'}
                     </Button>
                 </div>
+            </div>
+
+            <div className="mb-6">
+                <Search
+                    data={materials || []}
+                    searchFields={MATERIAL_SEARCH_FIELDS}
+                    onFilter={handleSearch}
+                    placeholder="Search materials..."
+                />
             </div>
 
             {/* Active Materials Section */}

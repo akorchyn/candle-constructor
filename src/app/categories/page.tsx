@@ -120,11 +120,11 @@ export default function CategoriesPage() {
                     <div className="p-6 text-center text-red-500">
                         {error instanceof Error ? error.message : 'Error loading categories'}
                     </div>
-                ) : !categories?.length ? (
+                ) : !searchResults?.length ? (
                     <div className="p-6 text-center text-gray-500">No categories found</div>
                 ) : (
                     <div className='space-y-2 w-full'>
-                        {categories.map((category) => (
+                        {searchResults.map((category) => (
                             <div key={category.id} className="p-6 flex justify-between items-center">
                                 <div>
                                     <h3 className="text-lg font-medium text-gray-900">{category.name}</h3>

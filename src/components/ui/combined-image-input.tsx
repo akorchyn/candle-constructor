@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { UploadButton } from "@uploadthing/react";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
-import Image from "next/image";
 import { X, Link, Upload } from "lucide-react";
 import { Button } from "./button";
 import { Input } from "./input";

@@ -30,10 +30,9 @@ export function CombinedImageInput({
         <div className="space-y-4">
             {value && (
                 <div className="relative w-40 h-40 mx-auto">
-                    <Image
+                    <img
                         src={value}
                         alt="Preview"
-                        fill
                         className="object-cover rounded-lg"
                     />
                     <Button
@@ -63,14 +62,14 @@ export function CombinedImageInput({
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="url">
-                        <form onSubmit={handleUrlSubmit} className="flex gap-2">
+                        <form className="flex gap-2">
                             <Input
                                 type="url"
                                 placeholder="Enter image URL..."
                                 value={urlInput}
                                 onChange={(e) => setUrlInput(e.target.value)}
                             />
-                            <Button type="submit">Set</Button>
+                            <Button onClick={handleUrlSubmit}>Set</Button>
                         </form>
                     </TabsContent>
                     <TabsContent value="upload">

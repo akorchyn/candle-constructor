@@ -17,7 +17,7 @@ interface MaterialFormData {
     pricePerUnit: number
     imageUrl?: string | null
     categoryId: number
-    purchaseUrl: string
+    purchaseUrl?: string | null
 }
 
 interface MaterialFormDialogProps {
@@ -114,7 +114,7 @@ export function MaterialFormDialog({
                                 <SelectValue placeholder="Select a category" />
                             </SelectTrigger>
                             <SelectContent>
-                                {categories?.map((category) => (
+                                {categories?.map((category: { id: number; name: string }) => (
                                     <SelectItem key={category.id} value={String(category.id)}>
                                         {category.name}
                                     </SelectItem>
@@ -150,9 +150,8 @@ export function MaterialFormDialog({
                         <Label htmlFor="purchaseUrl">Purchase URL</Label>
                         <Input
                             id="purchaseUrl"
-                            value={formData.purchaseUrl}
-                            onChange={(e) => setFormData(prev => ({ ...prev, purchaseUrl: e.target.value }))}
-                            required
+                            value={formData.purchaseUrl || ''}
+                            onChange={(e) => setFormData(prev => ({ ...prev, purchaseUrl: e.target.value == '' ? null : e.target.value }))}
                         />
                     </div>
 

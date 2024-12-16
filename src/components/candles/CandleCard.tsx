@@ -81,26 +81,27 @@ export function CandleCard({
                 {description && (
                     <p className="text-sm text-gray-500 mt-1">{description}</p>
                 )}
-                <div className="mt-4 space-y-2">
-                    <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Materials Cost:</span>
-                        <span className="font-medium">{totalCost.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Current Price:</span>
-                        <span className="font-medium">{priceValue.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm border-t pt-2">
-                        <span className="text-gray-500">Recommended Price:</span>
-                        <span className={`font-medium {priceValue < recommendedPrice ? 'text-red-600' : 'text-green-600'}`}>
-                            {recommendedPrice.toFixed(2)}
-                        </span>
-                    </div>
-                    <p className="text-xs text-gray-500">Weight: {weight}g</p>
-                </div>
+
             </CardContent>
             <CardFooter className="p-4 pt-0 mt-auto">
                 <div className="flex flex-col gap-2 w-full">
+                    <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Materials Cost:</span>
+                            <span className="font-medium">{totalCost.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Current Price:</span>
+                            <span className="font-medium">{priceValue.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm border-t pt-2">
+                            <span className="text-gray-500">Recommended Price:</span>
+                            <span className={`font-medium {priceValue < recommendedPrice ? 'text-red-600' : 'text-green-600'}`}>
+                                {recommendedPrice.toFixed(2)}
+                            </span>
+                        </div>
+                        <p className="text-xs text-gray-500">Weight: {weight}g</p>
+                    </div>
                     <Button
                         variant="outline"
                         className="w-full"

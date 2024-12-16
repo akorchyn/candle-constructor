@@ -1,5 +1,5 @@
 // src/components/materials/RecipeMaterialCard.tsx
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Plus, Minus, Check } from "lucide-react"
@@ -60,11 +60,12 @@ export function RecipeMaterialCard({
                 </div>
             </div>
             <CardContent className="p-4">
-                <h3 className="font-medium text-lg mb-2">{name}</h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-right text-gray-500">
                     {pricePerUnitValue.toFixed(2)} per {units}
                 </p>
-
+                <h3 className="font-medium text-lg mt-2">{name}</h3>
+            </CardContent>
+            <CardFooter className="p-4 pt-0 mt-auto">
                 {isInRecipe ? (
                     <div className="mt-4 space-y-4">
                         <div className="flex items-center gap-2">
@@ -104,7 +105,7 @@ export function RecipeMaterialCard({
                         Add to Recipe
                     </Button>
                 )}
-            </CardContent>
-        </Card>
+            </CardFooter>
+        </Card >
     )
 }

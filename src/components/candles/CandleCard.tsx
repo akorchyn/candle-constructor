@@ -52,7 +52,6 @@ export function CandleCard({
     onDelete,
     onManageRecipe
 }: CandleCardProps) {
-    const priceValue = parseFloat(price);
     const totalCost = recipes.reduce((sum, recipe) => {
         return sum + (recipe.amountUsed * recipe.material.pricePerUnit)
     }, 0)

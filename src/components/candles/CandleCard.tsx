@@ -17,6 +17,9 @@ interface CandleCardProps {
     description?: string
     price: number
     weight: number
+    aromaPercent: number
+    aromaPrice: number
+    aromatedPrice: number
     status: 'DRAFT' | 'ACTIVE' | 'DISCONTINUED'
     imageUrl?: string | null
     recipes: Recipe[]
@@ -39,6 +42,9 @@ export function CandleCard({
     description,
     price,
     weight,
+    aromaPercent,
+    aromaPrice,
+    aromatedPrice,
     status,
     imageUrl,
     recipes,
@@ -50,8 +56,10 @@ export function CandleCard({
     const totalCost = recipes.reduce((sum, recipe) => {
         return sum + (recipe.amountUsed * recipe.material.pricePerUnit)
     }, 0)
+    const aromaCost = (aromaPercent / 100) * weight * aromaPrice;
 
     const recommendedPrice = totalCost * PRICE_MULTIPLIER;
+    const recommendedPriceWithAroma = (totalCost + aromaCost) * PRICE_MULTIPLIER;
 
     return (
         <Card className="flex flex-col">
@@ -86,20 +94,36 @@ export function CandleCard({
             <CardFooter className="p-4 pt-0 mt-auto">
                 <div className="flex flex-col gap-2 w-full">
                     <div className="space-y-2">
+                        {aromaCost > 0 && (
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-500">Aroma Cost:</span>
+                                <span className="font-medium">{aromaCost.toFixed(2)}</span>
+                            </div>)}
                         <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">Materials Cost:</span>
+                            <span className="text-gray-500">{aromaCost > 0 ? 'Other Materials Cost:' : 'Materials Cost:'}</span>
                             <span className="font-medium">{totalCost.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">Current Price:</span>
-                            <span className="font-medium">{priceValue.toFixed(2)}</span>
+                            <span className="text-gray-500">Currently selling price:</span>
+                            <span className={`font-medium ${priceValue < recommendedPrice ? 'text-red-500' : ''}`}>{priceValue.toFixed(2)}</span>
                         </div>
+                        {aromaCost > 0 && (
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-500">Currently selling price with aroma:</span>
+                                <span className={`font-medium ${Number(aromatedPrice) < recommendedPriceWithAroma ? 'text-red-500' : ''}`}>{Number(aromatedPrice).toFixed(2)}</span>
+                            </div>
+                        )}
                         <div className="flex justify-between text-sm border-t pt-2">
                             <span className="text-gray-500">Recommended Price:</span>
-                            <span className={`font-medium {priceValue < recommendedPrice ? 'text-red-600' : 'text-green-600'}`}>
+                            <span className="font-medium">
                                 {recommendedPrice.toFixed(2)}
                             </span>
                         </div>
+                        {aromaCost > 0 && (
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-500">Recommended cost with aroma:</span>
+                                <span className="font-medium">{recommendedPriceWithAroma.toFixed(2)}</span>
+                            </div>)}
                         <p className="text-xs text-gray-500">Weight: {weight}g</p>
                     </div>
                     <Button

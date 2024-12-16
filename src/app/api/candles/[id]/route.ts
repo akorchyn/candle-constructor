@@ -37,6 +37,8 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
                 price: json.price,
                 weight: json.weight,
                 status: json.status,
+                aromaPercent: json.aromaPercent,
+                aromatedPrice: json.aromatedPrice,
             },
         })
         return NextResponse.json(candle)

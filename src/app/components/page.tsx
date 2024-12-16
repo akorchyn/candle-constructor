@@ -200,6 +200,7 @@ export default function ComponentsPage() {
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
                             This will permanently delete the component &quot;{materialToDelete?.name}&quot;.
+                            This will also delete this component from any recipes.
                             This action cannot be undone.
                         </AlertDialogDescription>
                     </AlertDialogHeader>

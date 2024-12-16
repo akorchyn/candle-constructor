@@ -14,7 +14,9 @@ interface CandleFormData {
     name: string
     description?: string | null
     price: number
+    aromatedPrice: number
     weight: number
+    aromaPercent: number
     status: 'DRAFT' | 'ACTIVE' | 'DISCONTINUED'
     imageUrl?: string | null
 }
@@ -38,7 +40,9 @@ export function CandleFormDialog({
         name: '',
         description: '',
         price: 0,
+        aromatedPrice: 0,
         weight: 0,
+        aromaPercent: 4,
         status: 'DRAFT',
         imageUrl: ''
     })
@@ -56,8 +60,6 @@ export function CandleFormDialog({
         try {
             await onSubmit({
                 ...formData,
-                price: Number(formData.price),
-                weight: Number(formData.weight)
             })
             onClose()
         } catch (error) {
@@ -103,7 +105,7 @@ export function CandleFormDialog({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="price">Price ($)</Label>
+                            <Label htmlFor="price">Currently Selling Price</Label>
                             <Input
                                 id="price"
                                 type="number"
@@ -111,7 +113,6 @@ export function CandleFormDialog({
                                 min="0"
                                 value={formData.price}
                                 onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.valueAsNumber }))}
-                                required
                             />
                         </div>
 
@@ -123,7 +124,31 @@ export function CandleFormDialog({
                                 min="0"
                                 value={formData.weight}
                                 onChange={(e) => setFormData(prev => ({ ...prev, weight: e.target.valueAsNumber }))}
-                                required
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="aromatedPrice">Aromated selling price</Label>
+                            <Input
+                                id="aromatedPrice"
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={formData.aromatedPrice}
+                                onChange={(e) => setFormData(prev => ({ ...prev, aromatedPrice: e.target.valueAsNumber }))}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="aromaPercent">Aroma Percent</Label>
+                            <Input
+                                id="aromaPercent"
+                                type="number"
+                                min="0"
+                                max="100"
+                                step="1"
+                                value={formData.aromaPercent}
+                                onChange={(e) => setFormData(prev => ({ ...prev, aromaPercent: e.target.valueAsNumber }))}
                             />
                         </div>
                     </div>
@@ -146,6 +171,8 @@ export function CandleFormDialog({
                             </SelectContent>
                         </Select>
                     </div>
+
+
 
                     <div className="flex justify-end space-x-2">
                         <Button variant="outline" type="button" onClick={onClose}>

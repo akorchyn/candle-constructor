@@ -45,6 +45,11 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
 export async function DELETE(request: Request, props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
     try {
+        // Delete all recipe materials for this material
+        await prisma.candleRecipe.deleteMany({
+            where: { materialId: parseInt(params.id) },
+        })
+
         await prisma.material.delete({
             where: { id: parseInt(params.id) },
         })

@@ -3,6 +3,13 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
     try {
+        const aromaPrice = await prisma.material.findFirst({
+            where: {
+                name: {
+                    contains: 'Арома'
+                }
+            }
+        })
         const candles = await prisma.candle.findMany({
             include: {
                 recipes: {
@@ -12,7 +19,10 @@ export async function GET() {
                 }
             }
         })
-        return NextResponse.json(candles)
+        return NextResponse.json(candles.map(candle => ({
+            ...candle,
+            aromaPrice: aromaPrice?.pricePerUnit
+        })))
     } catch (error) {
         console.error('Error fetching candles:', error)
         return NextResponse.json({ error: 'Error fetching candles' }, { status: 500 })
@@ -30,6 +40,8 @@ export async function POST(request: Request) {
                 price: json.price,
                 weight: json.weight,
                 status: json.status || 'DRAFT',
+                aromaPercent: json.aromaPercent,
+                aromatedPrice: json.aromatedPrice,
             },
         })
         return NextResponse.json(candle)

@@ -103,27 +103,23 @@ export function CandleCard({
                             <span className="text-gray-500">{aromaCost > 0 ? 'Other Materials Cost:' : 'Materials Cost:'}</span>
                             <span className="font-medium">{totalCost.toFixed(2)}</span>
                         </div>
-                        <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">Currently selling price:</span>
-                            <span className={`font-medium ${priceValue < recommendedPrice ? 'text-red-500' : ''}`}>{priceValue.toFixed(2)}</span>
+
+                        <div className="flex justify-between text-sm border-t pt-2">
+                            <span className="text-gray-500">Price (recommended):</span>
+                            <div className="font-medium">
+                                <span className={` ${Number(price) < recommendedPrice && Number(price) !== 0 ? 'text-red-500' : ''}`}>{Number(price).toFixed(2)} </span>
+                                ({recommendedPrice.toFixed(2)})
+                            </div>
                         </div>
                         {aromaCost > 0 && (
                             <div className="flex justify-between text-sm">
-                                <span className="text-gray-500">Currently selling price with aroma:</span>
-                                <span className={`font-medium ${Number(aromatedPrice) < recommendedPriceWithAroma ? 'text-red-500' : ''}`}>{Number(aromatedPrice).toFixed(2)}</span>
+                                <span className="text-gray-500">Aromated price:</span>
+                                <div className="font-medium">
+                                    <span className={` ${Number(aromatedPrice) < recommendedPriceWithAroma ? 'text-red-500' : ''}`}>{Number(aromatedPrice).toFixed(2)} </span>
+                                    ({recommendedPriceWithAroma.toFixed(2)})
+                                </div>
                             </div>
                         )}
-                        <div className="flex justify-between text-sm border-t pt-2">
-                            <span className="text-gray-500">Recommended Price:</span>
-                            <span className="font-medium">
-                                {recommendedPrice.toFixed(2)}
-                            </span>
-                        </div>
-                        {aromaCost > 0 && (
-                            <div className="flex justify-between text-sm">
-                                <span className="text-gray-500">Recommended cost with aroma:</span>
-                                <span className="font-medium">{recommendedPriceWithAroma.toFixed(2)}</span>
-                            </div>)}
                         <p className="text-xs text-gray-500">Weight: {weight}g</p>
                     </div>
                     <Button

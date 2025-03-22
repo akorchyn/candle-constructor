@@ -11,7 +11,8 @@ jobs:
         cd /home/user/candle-constructor
         git pull origin main
         npm install
-        npm prisma migrate deploy
-        npm prisma generate
-        npm run build && pm2 restart website
+        npx prisma generate
+        npm run build 
+        npx prisma migrate deploy
+        pm2 restart website
       shell: bash

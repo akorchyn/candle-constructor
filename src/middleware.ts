@@ -6,7 +6,12 @@ export async function middleware(request: NextRequest) {
     const isApiRoute = request.nextUrl.pathname.startsWith('/api');
     const isLoginRoute = request.nextUrl.pathname === '/login';
 
-    const { data: session } = await betterFetch<{ user?: { role?: string } }>(`${request.nextUrl.origin}/api/auth/get-session`, {
+    const origin = process.env.BETTER_AUTH_URL
+        ? // eslint-disable-next-line no-restricted-properties
+        `https://${process.env.BETTER_AUTH_URL}`
+        : request.nextUrl.origin
+
+    const { data: session } = await betterFetch<{ user?: { role?: string } }>(`${origin}/api/auth/get-session`, {
         headers: {
             cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
         },

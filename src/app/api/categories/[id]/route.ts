@@ -49,8 +49,6 @@ export async function DELETE(request: Request, props: { params: Promise<{ id: st
             }
         })
 
-        console.log('Category:', category)
-
         if (category?.materials.length) {
             return NextResponse.json(
                 { error: 'Cannot delete category with existing materials' },

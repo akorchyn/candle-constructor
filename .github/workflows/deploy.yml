@@ -1,0 +1,17 @@
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: candle-site
+    steps:
+    - name: git pull and build
+      run: |
+        cd /home/user/candle-constructor
+        git pull origin main
+        npm install
+        npm prisma migrate deploy
+        npm prisma generate
+        npm run build && pm2 restart website
+      shell: bash

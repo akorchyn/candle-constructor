@@ -10,33 +10,33 @@ generator client {
 }
 
 model Material {
-  id             Int            @id @default(autoincrement())
-  name           String
-  units          String
-  pricePerUnit   Decimal       @map("price_per_unit")
-  imageUrl       String?       @map("image_url")
-  purchaseUrl    String?       @map("purchase_url")
-  categoryId     Int           @map("category_id")
-  category       Category      @relation(fields: [categoryId], references: [id])
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime      @updatedAt @map("updated_at")
-  candleRecipes  CandleRecipe[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  units         String
+  pricePerUnit  Decimal        @map("price_per_unit")
+  imageUrl      String?        @map("image_url")
+  purchaseUrl   String?        @map("purchase_url")
+  categoryId    Int            @map("category_id")
+  category      Category       @relation(fields: [categoryId], references: [id])
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  candleRecipes CandleRecipe[]
 
   @@map("materials")
 }
 
 model Candle {
-  id           Int            @id @default(autoincrement())
+  id            Int            @id @default(autoincrement())
   name          String
   description   String?
-  imageUrl      String?       @map("image_url")
+  imageUrl      String?        @map("image_url")
   price         Decimal
-  aromatedPrice Decimal       @default(0) @map("aromated_price")
+  aromatedPrice Decimal        @default(0) @map("aromated_price")
   weight        Decimal
-  aromaPercent  Decimal       @default(4) @map("aroma_percent")
-  status        CandleStatus  @default(DRAFT)
-  createdAt     DateTime      @default(now()) @map("created_at")
-  updatedAt     DateTime      @updatedAt @map("updated_at")
+  aromaPercent  Decimal        @default(4) @map("aroma_percent")
+  status        CandleStatus   @default(DRAFT)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
   recipes       CandleRecipe[]
 
   @@map("candles")
@@ -57,11 +57,11 @@ model CandleRecipe {
 }
 
 model Category {
-  id          Int         @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
   description String?
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
   materials   Material[]
 
   @@map("categories")
@@ -74,12 +74,68 @@ enum CandleStatus {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
 
-  @@map("users")
+  role       String?
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
+
+  @@unique([email])
+  @@map("user")
 }
 
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}

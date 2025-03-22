@@ -1,34 +1,49 @@
-// src/middleware.ts
-import { NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
-import type { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from "next/server";
+import { betterFetch } from "@better-fetch/fetch";
 
 export async function middleware(request: NextRequest) {
-    const path = request.nextUrl.pathname
+    // Check if the request path starts with /api
+    const isApiRoute = request.nextUrl.pathname.startsWith('/api');
+    const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname);
 
-    // Public paths that don't require authentication
-    const isPublicPath = path === '/login'
-
-    const token = await getToken({
-        req: request,
-        secret: process.env.NEXTAUTH_SECRET,
-    })
-
-    // Redirect to login if not authenticated and trying to access protected route
-    if (!token && !isPublicPath) {
-        return NextResponse.redirect(new URL('/login', request.url))
+    if (isPublicRoute) {
+        return NextResponse.next();
     }
 
+    const { data: session } = await betterFetch<any>("/api/auth/get-session", {
+        baseURL: request.nextUrl.origin,
+        headers: {
+            cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
+        },
+    });
 
-    // Redirect to home if authenticated and trying to access login
-    if (token && isPublicPath) {
-        return NextResponse.redirect(new URL('/', request.url))
+    const failedAuth = !session || session.user.role !== 'admin';
+
+
+    // For API routes, return 401 Unauthorized instead of redirecting
+    if (isApiRoute && failedAuth) {
+        return new NextResponse(
+            JSON.stringify({
+                error: "Unauthorized",
+            }),
+            {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+    } else if (failedAuth) {
+        return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    return NextResponse.next()
+    return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
+const publicRoutes = [
+    '/login',
+]
+
 export const config = {
-    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+    matcher: [
+        '/((?!_next/static|_next/image|favicon.ico|api/auth).*)',
+    ],
 }

@@ -81,8 +81,12 @@ export default function RecipePage() {
         })
     }
 
+    const handleRemove = (materialId: number) => {
+        setRecipe(prev => prev.filter(item => item.materialId !== materialId))
+    }
+
     const handleSubmit = async () => {
-        await updateMutation.mutateAsync(recipe)
+        await updateMutation.mutateAsync(recipe.filter(item => item.amountUsed > 0))
     }
 
     const getAmountForMaterial = (materialId: number) => {
@@ -95,12 +99,12 @@ export default function RecipePage() {
 
     // Split materials into active and inactive
     const activeMaterials = searchResults?.filter((material: Material) =>
-        recipe.some(item => item.materialId === material.id && item.amountUsed > 0)
+        recipe.some(item => item.materialId === material.id)
     ) || []
 
     const inactiveMaterialsByCategory = searchResults?.reduce((acc: Record<number, Material[]>, material: Material) => {
         // Skip if material is active in recipe
-        if (recipe.some(item => item.materialId === material.id && item.amountUsed > 0)) {
+        if (recipe.some(item => item.materialId === material.id)) {
             return acc
         }
 
@@ -169,7 +173,9 @@ export default function RecipePage() {
                                 key={material.id}
                                 {...material}
                                 amount={getAmountForMaterial(material.id)}
+                                isInRecipe={recipe.some(item => item.materialId === material.id)}
                                 onAmountChange={handleAmountChange}
+                                onRemove={handleRemove}
                             />
                         ))}
                     </div>

@@ -11,7 +11,9 @@ interface RecipeMaterialCardProps {
     pricePerUnit: number
     imageUrl?: string | null
     amount: number
+    isInRecipe: boolean
     onAmountChange: (id: number, amount: number) => void
+    onRemove: (id: number) => void
 }
 
 export function RecipeMaterialCard({
@@ -21,10 +23,11 @@ export function RecipeMaterialCard({
     pricePerUnit,
     imageUrl,
     amount,
-    onAmountChange
+    isInRecipe,
+    onAmountChange,
+    onRemove
 }: RecipeMaterialCardProps) {
     const pricePerUnitValue = parseFloat(pricePerUnit)
-    const isInRecipe = amount > 0
     const totalPrice = amount * pricePerUnitValue
 
     const handleAdd = () => {
@@ -32,12 +35,12 @@ export function RecipeMaterialCard({
     }
 
     const handleRemove = () => {
-        onAmountChange(id, 0)
+        onRemove(id)
     }
 
     return (
         <Card className="flex flex-col relative">
-            {isInRecipe && (
+            {isInRecipe && amount > 0 && (
                 <div className="absolute top-2 right-2 z-10">
                     <div className="bg-green-500 rounded-full p-1">
                         <Check className="w-4 h-4 text-white" />

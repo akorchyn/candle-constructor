@@ -4,10 +4,13 @@ import Link from 'next/link';
 import Navigation from './Navigation'
 import { Tag, Receipt, PuzzlePiece } from "@phosphor-icons/react";
 import { Button } from '../ui/button';
-import { signOut, useSession } from 'next-auth/react';
+import { authClient } from "@/lib/auth-client"
+import { useRouter } from 'next/navigation';
+
 
 export default function Header() {
-    const { data: session } = useSession();
+    const { data: session } = authClient.useSession();
+    const router = useRouter();
 
     const navigation = [{ title: 'Categories', href: '/categories', icon: <Tag size={28} /> },
     { title: 'Components', href: '/components', icon: <PuzzlePiece size={28} /> },
@@ -27,20 +30,27 @@ export default function Header() {
                         </div>
                     }
                     {session &&
-                        <Button variant="default" className='max-w-[100px]' onClick={() => signOut()}>
+                        <Button variant="default" className='max-w-[100px]' onClick={() => authClient.signOut({
+                            fetchOptions: {
+                                onSuccess: () => {
+                                    router.push("/login"); // redirect to login page
+                                },
+                            },
+                        })}>
                             Logout
                         </Button>
                     }
                 </div>
 
-            </div>
+            </div >
 
 
             {session && (
                 <div className="md:hidden flex w-full">
                     <Navigation links={navigation} mobile={true} />
                 </div>
-            )}
+            )
+            }
         </>
     )
 }

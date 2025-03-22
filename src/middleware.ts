@@ -1,25 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { betterFetch } from "@better-fetch/fetch";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export async function middleware(request: NextRequest) {
     // Check if the request path starts with /api
-    const isApiRoute = request.nextUrl.pathname.startsWith('/api');
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
     const isLoginRoute = request.nextUrl.pathname === '/login';
-
-    const origin = process.env.BETTER_AUTH_URL
-        ? `${process.env.BETTER_AUTH_URL}`
-        : request.nextUrl.origin
-
-    const { data: session } = await betterFetch<{ user?: { role?: string } }>(`/api/auth/get-session`, {
-        baseURL: origin,
-        headers: {
-            cookie: request.headers.get("cookie") || "", // Forward the cookies from the request
-        },
-    });
-
-    console.log(request.headers.get("cookie"));
-
     const failedAuth = !session || session.user?.role !== 'admin';
+    const isApiRoute = request.nextUrl.pathname.startsWith('/api');
 
     if (isLoginRoute) {
         if (!failedAuth) {
@@ -50,4 +41,5 @@ export const config = {
     matcher: [
         '/((?!_next/static|_next/image|favicon.ico|api/auth).*)',
     ],
+    runtime: 'nodejs',
 }

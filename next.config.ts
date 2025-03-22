@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    nodeMiddleware: true,
+  },
 };
 
 export default nextConfig;

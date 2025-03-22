@@ -17,6 +17,9 @@ export async function GET() {
                         material: true
                     }
                 }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         })
         return NextResponse.json(candles.map(candle => ({

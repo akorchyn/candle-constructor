@@ -4,7 +4,7 @@ on:
 
 jobs:
   build:
-    runs-on: candle-site
+    runs-on: self-hosted
     steps:
     - name: git pull and build
       run: |

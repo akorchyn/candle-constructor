@@ -12,6 +12,8 @@ export default function Header() {
     const { data: session } = authClient.useSession();
     const router = useRouter();
 
+    const isAllowed = session?.user?.role === 'admin';
+
     const navigation = [{ title: 'Categories', href: '/categories', icon: <Tag size={28} /> },
     { title: 'Components', href: '/components', icon: <PuzzlePiece size={28} /> },
     { title: 'Candles', href: '/candles', icon: <Receipt size={28} /> }];
@@ -22,14 +24,14 @@ export default function Header() {
                     <Link className="flex flex-shrink-0 items-center" href="/">
                         <span className="text-xl font-bold text-gray-800">Candle Maker</span>
                     </Link>
-                    {session &&
+                    {isAllowed &&
                         <div className="md:flex w-full hidden">
                             <Navigation
                                 links={navigation} mobile={false}
                             />
                         </div>
                     }
-                    {session &&
+                    {isAllowed &&
                         <Button variant="default" className='max-w-[100px]' onClick={() => authClient.signOut({
                             fetchOptions: {
                                 onSuccess: () => {
@@ -45,7 +47,7 @@ export default function Header() {
             </div >
 
 
-            {session && (
+            {isAllowed && (
                 <div className="md:hidden flex w-full">
                     <Navigation links={navigation} mobile={true} />
                 </div>

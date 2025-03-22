@@ -17,6 +17,8 @@ export async function middleware(request: NextRequest) {
         },
     });
 
+    console.log(request.headers.get("cookie"));
+
     const failedAuth = !session || session.user?.role !== 'admin';
 
     if (isLoginRoute) {

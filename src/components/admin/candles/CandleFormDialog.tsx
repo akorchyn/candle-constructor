@@ -53,7 +53,7 @@ export function CandleFormDialog({
     initialData,
     title
 }: CandleFormDialogProps) {
-    const { data: categoriesData, isLoading: categoriesLoading } = useCategories()
+    const { data: categoriesData } = useCategories()
     const queryClient = useQueryClient()
     const [formData, setFormData] = useState<CandleFormData>({
         name: '',

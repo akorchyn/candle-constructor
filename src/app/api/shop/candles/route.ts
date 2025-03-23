@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-
+import { Prisma } from '@prisma/client'
 export async function GET(request: NextRequest) {
     try {
         const searchParams = request.nextUrl.searchParams
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
         const search = searchParams.get('search')
         const categoryIds = searchParams.get('categoryIds') ? searchParams.get('categoryIds')!.split(',').map(Number) : undefined
         // Build the query
-        const where: any = {
+        const where: Prisma.CandleWhereInput = {
             // Only show active candles in the shop
             status: 'ACTIVE',
         }

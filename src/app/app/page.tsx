@@ -1,7 +1,6 @@
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import FeaturedProducts from "@/components/featured-products"
 import CategorySection from "@/components/category-section"
 
@@ -14,7 +13,7 @@ export default function Home() {
                         Свічки ручної роботи для будь-якої нагоди
                     </h1>
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-                        Відкрийте для себе нашу колекцію преміальних свічок, виготовлених з натуральних інгредієнтів та любов'ю.
+                        Відкрийте для себе нашу колекцію преміальних свічок, виготовлених з натуральних інгредієнтів та любов&apos;ю.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
                         <Button size="lg" asChild>

@@ -5,7 +5,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { fetchCategories, createCategory, updateCategory, deleteCategory } from '@/lib/api'
-import { CategoryFormDialog } from '@/components/categories/CategoryFormDialog'
+import { CategoryFormDialog } from '@/components/admin/categories/CategoryFormDialog'
 import { Search } from '@/components/ui/search'
 import {
     AlertDialog,

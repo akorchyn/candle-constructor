@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { fetchCategories, fetchShopCandles } from "@/lib/user-api"
-import { Category } from "@prisma/client"
+import { fetchShopCandles } from "@/lib/user-api"
 import { useCategories } from "@/hooks/use-categories"
 
 // Define types
@@ -43,7 +42,6 @@ export default function ShopPage() {
             try {
                 setLoading(true)
                 const candlesData = await fetchShopCandles()
-                const categoriesData = await fetchCategories()
                 setCandles(candlesData)
                 setError(null)
             } catch (err) {

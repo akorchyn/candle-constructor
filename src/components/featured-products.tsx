@@ -42,7 +42,7 @@ export default function FeaturedProducts() {
         return (
             <section className="py-16">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-bold text-center mb-8">Featured Products</h2>
+                    <h2 className="text-3xl font-bold text-center mb-8">Рекомендовані товари</h2>
                     <div className="flex justify-center">
                         <p>Loading featured products...</p>
                     </div>
@@ -67,7 +67,7 @@ export default function FeaturedProducts() {
         <section className="py-16">
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-3xl font-bold">Featured Products</h2>
+                    <h2 className="text-3xl font-bold">Рекомендовані товари</h2>
                     <div className="flex items-center gap-2">
                         <Button variant="outline" size="icon" onClick={prevPage} disabled={products.length <= productsPerPage}>
                             <ChevronLeft className="h-4 w-4" />
@@ -92,11 +92,11 @@ export default function FeaturedProducts() {
                             <CardContent className="p-4">
                                 <Link href={`/app/shop/product/${product.slug}`} className="block">
                                     <h3 className="font-medium text-lg mb-2 line-clamp-1">{product.name}</h3>
-                                    <p className="font-bold">${Number(product.price).toFixed(2)}</p>
+                                    <p className="font-bold">₴{Number(product.price).toFixed(2)}</p>
                                 </Link>
                             </CardContent>
                             <CardFooter className="p-4 pt-0">
-                                <Button className="w-full">Add to Cart</Button>
+                                <Button className="w-full">Додати в кошик</Button>
                             </CardFooter>
                         </Card>
                     ))}

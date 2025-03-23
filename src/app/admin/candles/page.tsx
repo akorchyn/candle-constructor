@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation'
 import { Search } from '@/components/ui/search'
-import { type Candle, type CandleImages } from '@prisma/client'
+import { type Candle } from '@prisma/client'
 
 const CANDLE_SEARCH_FIELDS = ['name', 'description'] as (keyof Candle)[]
 

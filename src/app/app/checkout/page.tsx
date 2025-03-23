@@ -46,7 +46,7 @@ export default function CheckoutPage() {
                         <h2 className="text-xl font-bold mb-4">Інформація про доставку</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <Label htmlFor="first-name">Ім'я</Label>
+                                <Label htmlFor="first-name">Ім&apos;я</Label>
                                 <Input id="first-name" />
                             </div>
                             <div>
@@ -126,7 +126,7 @@ export default function CheckoutPage() {
                                         <Input id="cvv" placeholder="123" />
                                     </div>
                                     <div className="md:col-span-2">
-                                        <Label htmlFor="name-on-card">Ім'я на картці</Label>
+                                        <Label htmlFor="name-on-card">Ім&apos;я на картці</Label>
                                         <Input id="name-on-card" />
                                     </div>
                                 </div>

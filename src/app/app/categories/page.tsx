@@ -7,7 +7,6 @@ import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useCategories } from "@/hooks/use-categories"
-import { Category } from "@/types"
 
 export default function CategoriesPage() {
     const { data: categories = [], isLoading } = useCategories()

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Candle, CandleImage, CandleCategory } from '@prisma/client'
+import { CandleCategory } from '@prisma/client'
 
 interface CandleWithImages {
     id: number

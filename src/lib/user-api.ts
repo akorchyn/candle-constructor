@@ -105,3 +105,9 @@ export async function fetchRelatedProducts(slug: string) {
     return response.json();
 }
 
+export async function fetchFeaturedProducts() {
+    const response = await fetch('/api/shop/featured-products');
+    if (!response.ok) throw new Error('Failed to fetch featured products');
+    return response.json();
+}
+

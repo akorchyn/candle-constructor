@@ -56,6 +56,7 @@ export async function POST(request: Request) {
                 metaTitle: json.metaTitle,
                 metaDescription: json.metaDescription,
                 categoryId: json.categoryId,
+                features: json.features || [],
                 images: {
                     create: json.images.map((image) => ({
                         url: image.url,

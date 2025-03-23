@@ -46,7 +46,7 @@ export default function CategorySection() {
                                     <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
                                     <p className="mb-4">{category.description}</p>
                                     <Button asChild variant="outline" className="text-white border-white hover:bg-white/20">
-                                        <Link href={`/categories/${category.slug}`}>View Collection</Link>
+                                        <Link href={`/app/categories/${category.slug}`}>View Collection</Link>
                                     </Button>
                                 </div>
                             </div>

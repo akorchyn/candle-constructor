@@ -57,7 +57,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
                 metaDescription: json.metaDescription,
                 categoryId: json.categoryId,
                 slug: json.slug,
-                // Create new images
+                features: json.features || [],
                 images: {
                     create: json.images.map((image) => ({
                         url: image.url,
@@ -66,7 +66,6 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
                     }))
                 }
             },
-            // Include images in the response
             include: {
                 images: true
             }

@@ -123,13 +123,13 @@ export default function ShopPage() {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <h1 className="text-3xl font-bold">Shop All Candles</h1>
+                <h1 className="text-3xl font-bold">Всі свічки</h1>
                 <div className="flex items-center gap-4 w-full md:w-auto">
                     <div className="relative flex-1 md:w-[300px]">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
                             type="search"
-                            placeholder="Search candles..."
+                            placeholder="Пошук свічок..."
                             className="pl-8 w-full"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -138,13 +138,13 @@ export default function ShopPage() {
                     </div>
                     <Select value={sort} onValueChange={setSort}>
                         <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Sort by" />
+                            <SelectValue placeholder="Сортувати за" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="featured">Featured</SelectItem>
-                            <SelectItem value="newest">Newest</SelectItem>
-                            <SelectItem value="price-low">Price: Low to High</SelectItem>
-                            <SelectItem value="price-high">Price: High to Low</SelectItem>
+                            <SelectItem value="featured">Рекомендовані</SelectItem>
+                            <SelectItem value="newest">Найновіші</SelectItem>
+                            <SelectItem value="price-low">Ціна: від низької до високої</SelectItem>
+                            <SelectItem value="price-high">Ціна: від високої до низької</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -155,20 +155,20 @@ export default function ShopPage() {
                     <div className="sticky top-4 space-y-6 bg-background p-4 rounded-lg border">
                         <div>
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="font-medium text-lg">Filters</h3>
+                                <h3 className="font-medium text-lg">Фільтри</h3>
                                 <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={resetFilters}>
-                                    Reset All
+                                    Скинути все
                                 </Button>
                             </div>
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="font-medium">Price Range</h3>
+                            <h3 className="font-medium">Ціновий діапазон</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <Input
                                         type="number"
-                                        placeholder="Min"
+                                        placeholder="Мін"
                                         value={minPrice}
                                         onChange={(e) => setMinPrice(e.target.value)}
                                     />
@@ -176,14 +176,14 @@ export default function ShopPage() {
                                 <div>
                                     <Input
                                         type="number"
-                                        placeholder="Max"
+                                        placeholder="Макс"
                                         value={maxPrice}
                                         onChange={(e) => setMaxPrice(e.target.value)}
                                     />
                                 </div>
                             </div>
                             <div className="space-y-4">
-                                <h3 className="font-medium">Categories</h3>
+                                <h3 className="font-medium">Категорії</h3>
                                 <div className="space-y-2">
                                     {(categories ?? []).map((category) => (
                                         <div key={category.id} className="flex items-center">
@@ -204,7 +204,7 @@ export default function ShopPage() {
                                     ))}
                                 </div>
                             </div>
-                            <Button className="w-full" onClick={applyFilters}>Apply</Button>
+                            <Button className="w-full" onClick={applyFilters}>Застосувати</Button>
                         </div>
                     </div>
                 </div>
@@ -212,7 +212,7 @@ export default function ShopPage() {
                 <div className="lg:col-span-3">
                     {loading ? (
                         <div className="flex justify-center items-center h-64">
-                            <p>Loading candles...</p>
+                            <p>Завантаження свічок...</p>
                         </div>
                     ) : error ? (
                         <div className="flex justify-center items-center h-64">
@@ -220,7 +220,7 @@ export default function ShopPage() {
                         </div>
                     ) : sortedCandles.length === 0 ? (
                         <div className="flex justify-center items-center h-64">
-                            <p>No candles found matching your criteria.</p>
+                            <p>Не знайдено свічок за вашими критеріями.</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -241,7 +241,7 @@ export default function ShopPage() {
                                         </Link>
                                     </CardContent>
                                     <CardFooter className="p-4 pt-0">
-                                        <Button className="w-full">Add to Cart</Button>
+                                        <Button className="w-full">Додати в кошик</Button>
                                     </CardFooter>
                                 </Card>
                             ))}

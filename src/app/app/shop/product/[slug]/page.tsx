@@ -73,20 +73,13 @@ export default function ProductPage() {
     )
   }
 
-  // Sample features - in a real app, these might come from the database
-  const features = [
-    "Made from premium quality wax",
-    "Burn time: approximately 20 hours",
-    "Handcrafted with care",
-  ]
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
         <div className="space-y-4">
           <div className="aspect-square relative rounded-lg overflow-hidden border">
             <Image
-              src={candle.images[activeImage].url}
+              src={candle.images[activeImage]?.url || "/placeholder.svg"}
               alt={candle.name}
               fill
               className="object-cover"
@@ -102,7 +95,7 @@ export default function ProductPage() {
               >
                 <Image
                   src={image.url}
-                  alt={`${candle.name} thumbnail`}
+                  alt={image.alt}
                   fill
                   className="object-cover"
                 />
@@ -121,14 +114,16 @@ export default function ProductPage() {
 
           <p className="text-muted-foreground">{candle.description || ""}</p>
 
-          <div className="space-y-4">
-            <h3 className="font-medium">Features:</h3>
-            <ul className="list-disc pl-5 space-y-1">
-              {features.map((feature, index) => (
-                <li key={index}>{feature}</li>
-              ))}
-            </ul>
-          </div>
+          {candle.features && candle.features.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="font-medium">Features:</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                {candle.features.map((feature, index) => (
+                  <li key={index}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <Separator />
 

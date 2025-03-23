@@ -33,11 +33,10 @@ interface CandleFormData {
     slug: string
     metaTitle?: string
     metaDescription?: string
-    categoryId?: number
+    categoryIds: number[]
     images: ImageItem[]
+    features: string[]
 }
-
-
 
 interface CandleFormDialogProps {
     open: boolean
@@ -68,6 +67,7 @@ export function CandleFormDialog({
         featured: false,
         seasonal: false,
         slug: '',
+        features: [],
     })
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -126,6 +126,23 @@ export function CandleFormDialog({
         } finally {
             setIsSubmitting(false)
         }
+    }
+
+    const handleFeatureChange = (index: number, value: string) => {
+        const newFeatures = [...formData.features]
+        newFeatures[index] = value
+        setFormData(prev => ({ ...prev, features: newFeatures }))
+    }
+
+    const addFeature = () => {
+        setFormData(prev => ({ ...prev, features: [...prev.features, ''] }))
+    }
+
+    const removeFeature = (index: number) => {
+        setFormData(prev => ({
+            ...prev,
+            features: prev.features.filter((_, i) => i !== index)
+        }))
     }
 
     return (
@@ -192,8 +209,6 @@ export function CandleFormDialog({
                             onChange={(images) => setFormData(prev => ({ ...prev, images }))}
                         />
                     </div>
-
-
 
                     <div className="space-y-2">
                         <Label htmlFor="burnTime">Burn Time (hours)</Label>
@@ -278,7 +293,6 @@ export function CandleFormDialog({
                         </div>
                     </div>
 
-
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex items-center space-x-2">
                             <Switch
@@ -326,6 +340,37 @@ export function CandleFormDialog({
                             </Select>
                         </div>
                     )}
+
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                            <Label>Features</Label>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={addFeature}
+                            >
+                                Add Feature
+                            </Button>
+                        </div>
+                        {formData.features.map((feature, index) => (
+                            <div key={index} className="flex gap-2">
+                                <Input
+                                    value={feature}
+                                    onChange={(e) => handleFeatureChange(index, e.target.value)}
+                                    placeholder="Enter feature..."
+                                />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => removeFeature(index)}
+                                >
+                                    ×
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
 
                     <div className="space-y-2">
                         <Label htmlFor="metaTitle">Meta Title</Label>

@@ -22,7 +22,7 @@ export default function Header() {
             <div className="w-full sticky top-0 z-50 px-4 border-b">
                 <div className="flex w-full items-center justify-between bg-white py-[8px] md:gap-x-[24px] gap-x-[16px]">
                     <Link className="flex flex-shrink-0 items-center" href="/">
-                        <span className="text-xl font-bold text-gray-800">Candle Maker</span>
+                        <span className="text-xl font-bold text-gray-800">Arglow.candles</span>
                     </Link>
                     {isAllowed &&
                         <div className="md:flex w-full hidden">

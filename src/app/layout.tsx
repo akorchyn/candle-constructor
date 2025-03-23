@@ -14,8 +14,8 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin", "cyrillic", "cyrillic-ext"] })
 
 export const metadata: Metadata = {
-    title: "Candle Maker",
-    description: "Handcrafted candles for every occasion",
+    title: "Arglow.candles | Свічки ручної роботи для будь-якої нагоди",
+    description: "Свічки ручної роботи для будь-якої нагоди",
 }
 
 export default function RootLayout({

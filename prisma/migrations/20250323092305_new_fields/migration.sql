@@ -7,7 +7,7 @@
  */
 -- First, create a function to transliterate Cyrillic to Latin
 CREATE
-OR REPLACE FUNCTION transliterate_cyrillic(text TEXT) RETURNS TEXT AS $ $ BEGIN RETURN translate(
+OR REPLACE FUNCTION transliterate_cyrillic(text TEXT) RETURNS TEXT AS $$ BEGIN RETURN translate(
     text,
     'абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ',
     'abvgdeejzijklmnoprstufhzcssyyyeuaABVGDEEJZIJKLMNOPRSTUFHZCSSYYYEUA'
@@ -15,11 +15,11 @@ OR REPLACE FUNCTION transliterate_cyrillic(text TEXT) RETURNS TEXT AS $ $ BEGIN 
 
 END;
 
-$ $ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- Create function to generate slug with transliteration
 CREATE
-OR REPLACE FUNCTION generate_slug(title TEXT) RETURNS TEXT AS $ $ BEGIN RETURN LOWER(
+OR REPLACE FUNCTION generate_slug(title TEXT) RETURNS TEXT AS $$ BEGIN RETURN LOWER(
     REGEXP_REPLACE(
         REGEXP_REPLACE(
             transliterate_cyrillic(title),
@@ -33,7 +33,7 @@ OR REPLACE FUNCTION generate_slug(title TEXT) RETURNS TEXT AS $ $ BEGIN RETURN L
 
 END;
 
-$ $ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- CreateEnum
 CREATE TYPE "ReviewStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');

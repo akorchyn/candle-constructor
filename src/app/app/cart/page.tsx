@@ -47,14 +47,14 @@ export default function CartPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
+            <h1 className="text-3xl font-bold mb-8">Ваш кошик</h1>
 
             {cartItems.length === 0 ? (
                 <div className="text-center py-12">
-                    <h2 className="text-2xl font-medium mb-4">Your cart is empty</h2>
-                    <p className="text-muted-foreground mb-8">Looks like you haven't added any candles to your cart yet.</p>
+                    <h2 className="text-2xl font-medium mb-4">Ваш кошик порожній</h2>
+                    <p className="text-muted-foreground mb-8">Схоже, ви ще не додали жодної свічки до кошика.</p>
                     <Button asChild size="lg">
-                        <Link href="/app/shop">Continue Shopping</Link>
+                        <Link href="/app/shop">Продовжити покупки</Link>
                     </Button>
                 </div>
             ) : (
@@ -63,11 +63,11 @@ export default function CartPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[100px]">Product</TableHead>
-                                    <TableHead>Description</TableHead>
-                                    <TableHead>Price</TableHead>
-                                    <TableHead>Quantity</TableHead>
-                                    <TableHead>Total</TableHead>
+                                    <TableHead className="w-[100px]">Товар</TableHead>
+                                    <TableHead>Опис</TableHead>
+                                    <TableHead>Ціна</TableHead>
+                                    <TableHead>Кількість</TableHead>
+                                    <TableHead>Всього</TableHead>
                                     <TableHead className="w-[70px]"></TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -80,7 +80,7 @@ export default function CartPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Link href={`/product/${item.id}`} className="font-medium hover:underline">
+                                            <Link href={`/app/shop/product/${item.slug}`} className="font-medium hover:underline">
                                                 {item.name}
                                             </Link>
                                         </TableCell>
@@ -119,44 +119,44 @@ export default function CartPage() {
 
                         <div className="flex justify-between mt-8">
                             <Button variant="outline" asChild>
-                                <Link href="/app/shop">Continue Shopping</Link>
+                                <Link href="/app/shop">Продовжити покупки</Link>
                             </Button>
-                            <Button variant="outline">Update Cart</Button>
+                            <Button variant="outline">Оновити кошик</Button>
                         </div>
                     </div>
 
                     <div>
                         <div className="bg-muted/30 rounded-lg p-6 sticky top-4">
-                            <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+                            <h2 className="text-xl font-bold mb-4">Підсумок замовлення</h2>
 
                             <div className="space-y-4">
                                 <div className="flex justify-between">
-                                    <span>Subtotal</span>
+                                    <span>Проміжна сума</span>
                                     <span>₴{subtotal.toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span>Shipping</span>
+                                    <span>Доставка</span>
                                     <span>₴{shipping.toFixed(2)}</span>
                                 </div>
 
                                 <Separator />
 
                                 <div className="flex justify-between font-bold">
-                                    <span>Total</span>
+                                    <span>Всього</span>
                                     <span>₴{total.toFixed(2)}</span>
                                 </div>
 
                                 <div className="pt-4">
                                     <Button className="w-full" size="lg" asChild>
-                                        <Link href="/app/checkout">Proceed to Checkout</Link>
+                                        <Link href="/app/checkout">Перейти до оформлення</Link>
                                     </Button>
                                 </div>
 
                                 <div className="pt-4">
-                                    <h3 className="font-medium mb-2">Promo Code</h3>
+                                    <h3 className="font-medium mb-2">Промокод</h3>
                                     <div className="flex">
-                                        <Input placeholder="Enter code" className="rounded-r-none" />
-                                        <Button className="rounded-l-none">Apply</Button>
+                                        <Input placeholder="Введіть код" className="rounded-r-none" />
+                                        <Button className="rounded-l-none">Застосувати</Button>
                                     </div>
                                 </div>
                             </div>

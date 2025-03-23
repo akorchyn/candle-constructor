@@ -55,9 +55,10 @@ export async function GET(request: NextRequest) {
                 weight: true,
                 slug: true,
             },
-            orderBy: {
-                createdAt: 'desc',
-            }
+            orderBy: [
+                { featured: 'desc' },
+                { createdAt: 'desc' },
+            ]
         })
 
         // Transform the response to match the expected format

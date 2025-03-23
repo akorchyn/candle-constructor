@@ -38,19 +38,19 @@ export default function CheckoutPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+            <h1 className="text-3xl font-bold mb-8">Оформлення замовлення</h1>
 
             <div className="grid lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-8">
                     <div className="bg-background rounded-lg border p-6">
-                        <h2 className="text-xl font-bold mb-4">Shipping Information</h2>
+                        <h2 className="text-xl font-bold mb-4">Інформація про доставку</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <Label htmlFor="first-name">First Name</Label>
+                                <Label htmlFor="first-name">Ім'я</Label>
                                 <Input id="first-name" />
                             </div>
                             <div>
-                                <Label htmlFor="last-name">Last Name</Label>
+                                <Label htmlFor="last-name">Прізвище</Label>
                                 <Input id="last-name" />
                             </div>
                             <div>
@@ -58,46 +58,46 @@ export default function CheckoutPage() {
                                 <Input id="email" type="email" />
                             </div>
                             <div>
-                                <Label htmlFor="phone">Phone</Label>
+                                <Label htmlFor="phone">Телефон</Label>
                                 <Input id="phone" type="tel" />
                             </div>
                             <div className="md:col-span-2">
-                                <Label htmlFor="address">Address</Label>
+                                <Label htmlFor="address">Адреса</Label>
                                 <Input id="address" />
                             </div>
                             <div>
-                                <Label htmlFor="city">City</Label>
+                                <Label htmlFor="city">Місто</Label>
                                 <Input id="city" />
                             </div>
                             <div>
-                                <Label htmlFor="postal-code">Postal Code</Label>
+                                <Label htmlFor="postal-code">Поштовий індекс</Label>
                                 <Input id="postal-code" />
                             </div>
                             <div>
-                                <Label htmlFor="country">Country</Label>
-                                <Select defaultValue="us">
+                                <Label htmlFor="country">Країна</Label>
+                                <Select defaultValue="ua">
                                     <SelectTrigger id="country">
-                                        <SelectValue placeholder="Select country" />
+                                        <SelectValue placeholder="Оберіть країну" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="us">United States</SelectItem>
-                                        <SelectItem value="ca">Canada</SelectItem>
-                                        <SelectItem value="uk">United Kingdom</SelectItem>
-                                        <SelectItem value="au">Australia</SelectItem>
+                                        <SelectItem value="ua">Україна</SelectItem>
+                                        <SelectItem value="pl">Польща</SelectItem>
+                                        <SelectItem value="de">Німеччина</SelectItem>
+                                        <SelectItem value="uk">Велика Британія</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div>
-                                <Label htmlFor="state">State/Province</Label>
+                                <Label htmlFor="state">Область</Label>
                                 <Select>
                                     <SelectTrigger id="state">
-                                        <SelectValue placeholder="Select state" />
+                                        <SelectValue placeholder="Оберіть область" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="ny">New York</SelectItem>
-                                        <SelectItem value="ca">California</SelectItem>
-                                        <SelectItem value="tx">Texas</SelectItem>
-                                        <SelectItem value="fl">Florida</SelectItem>
+                                        <SelectItem value="ky">Київська</SelectItem>
+                                        <SelectItem value="lv">Львівська</SelectItem>
+                                        <SelectItem value="od">Одеська</SelectItem>
+                                        <SelectItem value="kh">Харківська</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -105,28 +105,28 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="bg-background rounded-lg border p-6">
-                        <h2 className="text-xl font-bold mb-4">Payment Method</h2>
+                        <h2 className="text-xl font-bold mb-4">Спосіб оплати</h2>
                         <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
                             <div className="flex items-center space-x-2 mb-4">
                                 <RadioGroupItem value="credit-card" id="credit-card" />
-                                <Label htmlFor="credit-card">Credit Card</Label>
+                                <Label htmlFor="credit-card">Кредитна картка</Label>
                             </div>
                             {paymentMethod === "credit-card" && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 pl-6">
                                     <div className="md:col-span-2">
-                                        <Label htmlFor="card-number">Card Number</Label>
+                                        <Label htmlFor="card-number">Номер картки</Label>
                                         <Input id="card-number" placeholder="1234 5678 9012 3456" />
                                     </div>
                                     <div>
-                                        <Label htmlFor="expiry">Expiry Date</Label>
-                                        <Input id="expiry" placeholder="MM/YY" />
+                                        <Label htmlFor="expiry">Термін дії</Label>
+                                        <Input id="expiry" placeholder="ММ/РР" />
                                     </div>
                                     <div>
                                         <Label htmlFor="cvv">CVV</Label>
                                         <Input id="cvv" placeholder="123" />
                                     </div>
                                     <div className="md:col-span-2">
-                                        <Label htmlFor="name-on-card">Name on Card</Label>
+                                        <Label htmlFor="name-on-card">Ім'я на картці</Label>
                                         <Input id="name-on-card" />
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@ export default function CheckoutPage() {
                             </div>
                             <div className="flex items-center space-x-2">
                                 <RadioGroupItem value="bank-transfer" id="bank-transfer" />
-                                <Label htmlFor="bank-transfer">Bank Transfer</Label>
+                                <Label htmlFor="bank-transfer">Банківський переказ</Label>
                             </div>
                         </RadioGroup>
                     </div>
@@ -145,7 +145,7 @@ export default function CheckoutPage() {
 
                 <div>
                     <div className="bg-muted/30 rounded-lg p-6 sticky top-4">
-                        <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+                        <h2 className="text-xl font-bold mb-4">Підсумок замовлення</h2>
 
                         <div className="space-y-4 mb-6">
                             {cartItems.map((item) => (
@@ -155,7 +155,7 @@ export default function CheckoutPage() {
                                     </div>
                                     <div className="flex-1">
                                         <div className="font-medium">{item.name}</div>
-                                        <div className="text-sm text-muted-foreground">Qty: {item.quantity}</div>
+                                        <div className="text-sm text-muted-foreground">К-сть: {item.quantity}</div>
                                         <div className="font-medium">₴{(item.price * item.quantity).toFixed(2)}</div>
                                     </div>
                                 </div>
@@ -166,28 +166,28 @@ export default function CheckoutPage() {
 
                         <div className="space-y-4">
                             <div className="flex justify-between">
-                                <span>Subtotal</span>
+                                <span>Проміжна сума</span>
                                 <span>₴{subtotal.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span>Shipping</span>
+                                <span>Доставка</span>
                                 <span>₴{shipping.toFixed(2)}</span>
                             </div>
 
                             <Separator />
 
                             <div className="flex justify-between font-bold">
-                                <span>Total</span>
+                                <span>Всього</span>
                                 <span>₴{total.toFixed(2)}</span>
                             </div>
 
                             <div className="pt-4">
                                 <Button className="w-full" size="lg">
-                                    Place Order
+                                    Оформити замовлення
                                 </Button>
                                 <div className="text-center mt-4">
                                     <Link href="/app/cart" className="text-sm text-muted-foreground hover:text-foreground">
-                                        Return to Cart
+                                        Повернутися до кошика
                                     </Link>
                                 </div>
                             </div>

@@ -7,14 +7,28 @@ import Image from "next/image"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 
 export default function FeaturedProducts() {
     const { data: products, isLoading, error } = useFeaturedProducts()
     const [currentPage, setCurrentPage] = useState(0)
-    const productsPerPage = 4
+    const [productsPerPage, setProductsPerPage] = useState(4)
 
+    // Add window resize handler
+    useEffect(() => {
+        const handleResize = () => {
+            if (typeof window !== 'undefined') {
+                setProductsPerPage(window.innerWidth < 640 ? 1 : 4)
+            }
+        }
+
+        // Set initial value
+        handleResize()
+
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const nextPage = () => {
         setCurrentPage((prev) => (prev + 1) % totalPages)
@@ -45,7 +59,7 @@ export default function FeaturedProducts() {
         return null // Hide section if no featured products
     }
 
-    const totalPages = Math.ceil(products.length / productsPerPage)
+    const totalPages = Math.ceil((products?.length || 0) / productsPerPage)
 
     const displayedProducts = products.slice(currentPage * productsPerPage, (currentPage + 1) * productsPerPage)
 

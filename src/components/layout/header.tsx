@@ -15,27 +15,21 @@ export default function Header() {
                 </Link>
                 <nav className="hidden md:flex items-center space-x-6">
                     <Link href="/app/shop" className="text-sm font-medium hover:text-primary">
-                        Shop
+                        Магазин
                     </Link>
                     <Link href="/app/categories" className="text-sm font-medium hover:text-primary">
-                        Categories
-                    </Link>
-                    <Link href="/app/about" className="text-sm font-medium hover:text-primary">
-                        About Us
-                    </Link>
-                    <Link href="/app/contact" className="text-sm font-medium hover:text-primary">
-                        Contact
+                        Категорії
                     </Link>
                 </nav>
                 <div className="flex items-center space-x-4">
-                    <div className="relative hidden md:block">
+                    {/* <div className="relative hidden md:block">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
                             type="search"
                             placeholder="Search candles..."
                             className="w-[200px] pl-8 rounded-md bg-background"
                         />
-                    </div>
+                    </div> */}
                     <Link href="/app/cart">
                         <Button variant="outline" size="icon" className="relative">
                             <ShoppingCart className="h-5 w-5" />

@@ -14,7 +14,6 @@ export async function GET(
                 reviews: true,
             },
         })
-
         if (!candle) {
             return NextResponse.json(
                 { error: 'Candle not found' },

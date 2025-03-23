@@ -8,19 +8,21 @@ export async function middleware(request: NextRequest) {
         headers: await headers()
     })
 
-    const isLoginRoute = request.nextUrl.pathname === '/login';
+    const isAdminRoute = adminRoutes.some(route => request.nextUrl.pathname.startsWith(route));
     const failedAuth = !session || session.user?.role !== 'admin';
     const isApiRoute = request.nextUrl.pathname.startsWith('/api');
+    const isLoginRoute = request.nextUrl.pathname === '/login';
 
-    if (isLoginRoute) {
-        if (!failedAuth) {
-            return NextResponse.redirect(new URL("/", request.url));
-        }
+    if (isLoginRoute && !failedAuth) {
+        return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    if (!isAdminRoute) {
         return NextResponse.next();
     }
 
     // For API routes, return 401 Unauthorized instead of redirecting
-    if (isApiRoute && failedAuth) {
+    if (failedAuth && isApiRoute && isAdminRoute) {
         return new NextResponse(
             JSON.stringify({
                 error: "Unauthorized",
@@ -30,12 +32,14 @@ export async function middleware(request: NextRequest) {
                 headers: { 'Content-Type': 'application/json' }
             }
         );
-    } else if (failedAuth) {
+    } else if (failedAuth && isAdminRoute) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
     return NextResponse.next();
 }
+
+const adminRoutes = ["/admin", "/api/admin"]
 
 export const config = {
     matcher: [

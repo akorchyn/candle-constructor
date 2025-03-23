@@ -29,12 +29,25 @@ model Candle {
   id            Int            @id @default(autoincrement())
   name          String
   description   String?
-  imageUrl      String?        @map("image_url")
+  images        CandleImage[]
   price         Decimal
   aromatedPrice Decimal        @default(0) @map("aromated_price")
   weight        Decimal
   aromaPercent  Decimal        @default(4) @map("aroma_percent")
   status        CandleStatus   @default(DRAFT)
+  burnTime      Int?           @map("burn_time")
+  dimensions    String?
+  color         String?
+  fragrance     String?
+  featured      Boolean       @default(false)
+  seasonal      Boolean       @default(false)
+  seasonType    SeasonType?   @map("season_type")
+  slug          String        @unique
+  metaTitle     String?       @map("meta_title")
+  metaDescription String?     @map("meta_description")
+  categoryId    Int?          @map("category_id")
+  category      CandleCategory? @relation(fields: [categoryId], references: [id])
+  reviews       Review[]
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime       @updatedAt @map("updated_at")
   recipes       CandleRecipe[]
@@ -83,6 +96,7 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  reviews       Review[]
 
   role       String?
   banned     Boolean?
@@ -138,4 +152,67 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model CandleImage {
+  id        Int      @id @default(autoincrement())
+  candleId  Int      @map("candle_id")
+  candle    Candle   @relation(fields: [candleId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  isPrimary Boolean  @default(false) @map("is_primary")
+  order     Int      @default(0)
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("candle_images")
+}
+
+model CandleCategory {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  slug        String   @unique
+  imageUrl    String?  @map("image_url")
+  parentId    Int?     @map("parent_id")
+  parent      CandleCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    CandleCategory[] @relation("CategoryHierarchy")
+  candles     Candle[]
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("candle_categories")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  candleId  Int      @map("candle_id")
+  candle    Candle   @relation(fields: [candleId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int      // 1-5 stars
+  title     String?
+  content   String
+  status    ReviewStatus @default(PENDING)
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("reviews")
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum SeasonType {
+  SPRING
+  SUMMER
+  AUTUMN
+  WINTER
+  HOLIDAY
 }

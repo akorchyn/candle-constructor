@@ -1,6 +1,8 @@
+import { Candle } from "@prisma/client"
+
 // src/lib/api.ts
 export async function fetchMaterials() {
-    const response = await fetch('/api/materials')
+    const response = await fetch('/api/admin/materials')
     if (!response.ok) throw new Error('Failed to fetch materials')
     return response.json()
 }
@@ -11,7 +13,7 @@ export async function createMaterial(data: {
     pricePerUnit: number
     imageUrl?: string
 }) {
-    const response = await fetch('/api/materials', {
+    const response = await fetch('/api/admin/materials', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -26,7 +28,7 @@ export async function updateMaterial(id: number, data: {
     pricePerUnit: number
     imageUrl?: string
 }) {
-    const response = await fetch(`/api/materials/${id}`, {
+    const response = await fetch(`/api/admin/materials/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -36,7 +38,7 @@ export async function updateMaterial(id: number, data: {
 }
 
 export async function deleteMaterial(id: number) {
-    const response = await fetch(`/api/materials/${id}`, {
+    const response = await fetch(`/api/admin/materials/${id}`, {
         method: 'DELETE',
     })
     if (!response.ok) throw new Error('Failed to delete material')
@@ -44,20 +46,14 @@ export async function deleteMaterial(id: number) {
 }
 
 export async function fetchCandles() {
-    const response = await fetch('/api/candles')
+    const response = await fetch('/api/admin/candles')
     if (!response.ok) throw new Error('Failed to fetch candles')
     return response.json()
 }
 
-export async function createCandle(data: {
-    name: string
-    description?: string
-    imageUrl?: string
-    price: number
-    weight: number
-    status?: 'DRAFT' | 'ACTIVE' | 'DISCONTINUED'
-}) {
-    const response = await fetch('/api/candles', {
+export async function createCandle(data: Candle) {
+    console.log(data);
+    const response = await fetch('/api/admin/candles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -66,15 +62,8 @@ export async function createCandle(data: {
     return response.json()
 }
 
-export async function updateCandle(id: number, data: {
-    name: string
-    description?: string
-    imageUrl?: string
-    price: number
-    weight: number
-    status?: 'DRAFT' | 'ACTIVE' | 'DISCONTINUED'
-}) {
-    const response = await fetch(`/api/candles/${id}`, {
+export async function updateCandle(id: number, data: Candle) {
+    const response = await fetch(`/api/admin/candles/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -84,7 +73,7 @@ export async function updateCandle(id: number, data: {
 }
 
 export async function deleteCandle(id: number) {
-    const response = await fetch(`/api/candles/${id}`, {
+    const response = await fetch(`/api/admin/candles/${id}`, {
         method: 'DELETE',
     })
     if (!response.ok) throw new Error('Failed to delete candle')
@@ -97,7 +86,7 @@ export async function addRecipe(data: {
     amountUsed: number
     notes?: string
 }) {
-    const response = await fetch('/api/recipes', {
+    const response = await fetch('/api/admin/recipes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -110,7 +99,7 @@ export async function updateRecipe(id: number, data: {
     amountUsed: number
     notes?: string
 }) {
-    const response = await fetch(`/api/recipes/${id}`, {
+    const response = await fetch(`/api/admin/recipes/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -120,7 +109,7 @@ export async function updateRecipe(id: number, data: {
 }
 
 export async function deleteRecipe(id: number) {
-    const response = await fetch(`/api/recipes/${id}`, {
+    const response = await fetch(`/api/admin/recipes/${id}`, {
         method: 'DELETE',
     })
     if (!response.ok) throw new Error('Failed to delete recipe')
@@ -128,13 +117,13 @@ export async function deleteRecipe(id: number) {
 }
 
 export async function fetchCategories() {
-    const response = await fetch('/api/categories')
+    const response = await fetch('/api/admin/categories')
     if (!response.ok) throw new Error('Failed to fetch categories')
     return response.json()
 }
 
 export async function fetchCategory(id: number) {
-    const response = await fetch(`/api/categories/${id}`)
+    const response = await fetch(`/api/admin/categories/${id}`)
     if (!response.ok) throw new Error('Failed to fetch category')
     return response.json()
 }
@@ -143,7 +132,7 @@ export async function createCategory(data: {
     name: string
     description?: string
 }) {
-    const response = await fetch('/api/categories', {
+    const response = await fetch('/api/admin/categories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -156,7 +145,7 @@ export async function updateCategory(id: number, data: {
     name: string
     description?: string
 }) {
-    const response = await fetch(`/api/categories/${id}`, {
+    const response = await fetch(`/api/admin/categories/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -166,7 +155,7 @@ export async function updateCategory(id: number, data: {
 }
 
 export async function deleteCategory(id: number) {
-    const response = await fetch(`/api/categories/${id}`, {
+    const response = await fetch(`/api/admin/categories/${id}`, {
         method: 'DELETE',
     })
     if (!response.ok) throw new Error('Failed to delete category')
@@ -174,7 +163,7 @@ export async function deleteCategory(id: number) {
 }
 
 export async function fetchCandle(id: number) {
-    const response = await fetch(`/api/candles/${id}`)
+    const response = await fetch(`/api/admin/candles/${id}`)
     if (!response.ok) throw new Error('Failed to fetch candle')
     return response.json()
 }
@@ -183,7 +172,7 @@ export async function updateCandleRecipe(candleId: number, recipe: Array<{
     materialId: number
     amountUsed: number
 }>) {
-    const response = await fetch(`/api/candles/${candleId}/recipe`, {
+    const response = await fetch(`/api/admin/candles/${candleId}/recipe`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

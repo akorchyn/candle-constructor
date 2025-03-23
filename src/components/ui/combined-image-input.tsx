@@ -7,6 +7,7 @@ import { X, Link, Upload } from "lucide-react";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+import Image from "next/image";
 
 interface CombinedImageInputProps {
     value: string;
@@ -29,10 +30,12 @@ export function CombinedImageInput({
         <div className="space-y-4">
             {value && (
                 <div className="relative w-40 h-40 mx-auto">
-                    <img
+                    <Image
                         src={value}
                         alt="Preview"
                         className="object-cover rounded-lg"
+                        width={100}
+                        height={100}
                     />
                     <Button
                         onClick={() => {
@@ -61,15 +64,13 @@ export function CombinedImageInput({
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="url">
-                        <form className="flex gap-2">
-                            <Input
-                                type="url"
-                                placeholder="Enter image URL..."
-                                value={urlInput}
-                                onChange={(e) => setUrlInput(e.target.value)}
-                            />
-                            <Button onClick={handleUrlSubmit}>Set</Button>
-                        </form>
+                        <Input
+                            type="url"
+                            placeholder="Enter image URL..."
+                            value={urlInput}
+                            onChange={(e) => setUrlInput(e.target.value)}
+                        />
+                        <Button onClick={handleUrlSubmit}>Set</Button>
                     </TabsContent>
                     <TabsContent value="upload">
                         <div className="flex items-center justify-center">

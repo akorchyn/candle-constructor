@@ -5,6 +5,8 @@ import { admin } from "better-auth/plugins"
 
 const prisma = new PrismaClient();
 
+export type Session = typeof auth.$Infer.Session;
+
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql",

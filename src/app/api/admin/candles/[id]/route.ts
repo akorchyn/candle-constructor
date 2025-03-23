@@ -1,3 +1,4 @@
+import { ImageItem } from '@/components/admin/candles/MultiImageLoader';
 import { prisma } from '@/lib/db'
 import { NextResponse } from 'next/server'
 
@@ -12,6 +13,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
                         material: true,
                     },
                 },
+                images: true,
             },
         })
         if (!candle) {
@@ -28,18 +30,46 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
     const params = await props.params;
     try {
         const json = await request.json()
+
+        // First delete existing images
+        await prisma.candleImage.deleteMany({
+            where: { candleId: parseInt(params.id) }
+        })
+
         const candle = await prisma.candle.update({
             where: { id: parseInt(params.id) },
             data: {
                 name: json.name,
                 description: json.description,
-                imageUrl: json.imageUrl,
                 price: json.price,
                 weight: json.weight,
                 status: json.status,
                 aromaPercent: json.aromaPercent,
                 aromatedPrice: json.aromatedPrice,
+                burnTime: json.burnTime,
+                dimensions: json.dimensions,
+                color: json.color,
+                fragrance: json.fragrance,
+                featured: json.featured,
+                seasonal: json.seasonal,
+                seasonType: json.seasonType,
+                metaTitle: json.metaTitle,
+                metaDescription: json.metaDescription,
+                categoryId: json.categoryId,
+                slug: json.slug,
+                // Create new images
+                images: {
+                    create: json.images.map((image) => ({
+                        url: image.url,
+                        alt: image.alt || '',
+                        isPrimary: image.isPrimary
+                    }))
+                }
             },
+            // Include images in the response
+            include: {
+                images: true
+            }
         })
         return NextResponse.json(candle)
     } catch (error) {

@@ -3,8 +3,8 @@
 import { useState, useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
-import { CandleCard } from '@/components/candles/CandleCard'
-import { CandleFormDialog } from '@/components/candles/CandleFormDialog'
+import { CandleCard } from '@/components/admin/candles/CandleCard'
+import { CandleFormDialog } from '@/components/admin/candles/CandleFormDialog'
 import { fetchCandles, createCandle, updateCandle, deleteCandle } from '@/lib/api'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -19,17 +19,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation'
 import { Search } from '@/components/ui/search'
-
-interface Candle {
-    id: number
-    name: string
-    description: string | null
-    price: number
-    weight: number
-    status: 'DRAFT' | 'ACTIVE' | 'DISCONTINUED'
-    imageUrl: string | null
-    recipes: number[]
-}
+import { type Candle, type CandleImages } from '@prisma/client'
 
 const CANDLE_SEARCH_FIELDS = ['name', 'description'] as (keyof Candle)[]
 
@@ -95,7 +85,7 @@ export default function CandlesPage() {
     }
 
     const handleManageRecipe = (id: number) => {
-        router.push(`/candles/${id}/recipe`)
+        router.push(`/admin/candles/${id}/recipe`)
     }
 
     const handleSearch = useCallback((results: Candle[]) => {
@@ -151,6 +141,7 @@ export default function CandlesPage() {
                                 <CandleCard
                                     key={candle.id}
                                     {...candle}
+                                    imageUrl={candle.images.find(image => image.isPrimary)?.url}
                                     onEdit={() => setCandleToEdit(candle)}
                                     onDelete={() => setCandleToDelete(candle)}
                                     onManageRecipe={handleManageRecipe}

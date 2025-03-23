@@ -16,7 +16,8 @@ export async function GET() {
                     include: {
                         material: true
                     }
-                }
+                },
+                images: true
             },
             orderBy: {
                 createdAt: 'desc'
@@ -34,18 +35,38 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const json = await request.json()
+        const json = await request.json();
         const candle = await prisma.candle.create({
             data: {
                 name: json.name,
                 description: json.description,
-                imageUrl: json.imageUrl,
                 price: json.price,
                 weight: json.weight,
                 status: json.status || 'DRAFT',
                 aromaPercent: json.aromaPercent,
                 aromatedPrice: json.aromatedPrice,
+                slug: json.slug,
+                burnTime: json.burnTime,
+                dimensions: json.dimensions,
+                color: json.color,
+                fragrance: json.fragrance,
+                featured: json.featured,
+                seasonal: json.seasonal,
+                seasonType: json.seasonType,
+                metaTitle: json.metaTitle,
+                metaDescription: json.metaDescription,
+                categoryId: json.categoryId,
+                images: {
+                    create: json.images.map((image) => ({
+                        url: image.url,
+                        alt: image.alt || '',
+                        isPrimary: image.isPrimary
+                    }))
+                }
             },
+            include: {
+                images: true
+            }
         })
         return NextResponse.json(candle)
     } catch (error) {

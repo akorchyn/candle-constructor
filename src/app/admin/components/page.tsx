@@ -3,8 +3,8 @@
 import { useState, useCallback, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
-import { MaterialCard } from '@/components/materials/MaterialCard'
-import { MaterialFormDialog } from '@/components/materials/MaterialFormDialog'
+import { MaterialCard } from '@/components/admin/materials/MaterialCard'
+import { MaterialFormDialog } from '@/components/admin/materials/MaterialFormDialog'
 import { fetchMaterials, fetchCategories, createMaterial, updateMaterial, deleteMaterial } from '@/lib/api'
 import { Search } from '@/components/ui/search'
 import {

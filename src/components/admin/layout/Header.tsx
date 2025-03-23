@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Navigation from './Navigation'
 import { Tag, Receipt, PuzzlePiece } from "@phosphor-icons/react";
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { authClient } from "@/lib/auth-client"
 import { useRouter } from 'next/navigation';
 
@@ -14,9 +14,9 @@ export default function Header() {
 
     const isAllowed = session?.user?.role === 'admin';
 
-    const navigation = [{ title: 'Categories', href: '/categories', icon: <Tag size={28} /> },
-    { title: 'Components', href: '/components', icon: <PuzzlePiece size={28} /> },
-    { title: 'Candles', href: '/candles', icon: <Receipt size={28} /> }];
+    const navigation = [{ title: 'Categories', href: '/admin/categories', icon: <Tag size={28} /> },
+    { title: 'Components', href: '/admin/components', icon: <PuzzlePiece size={28} /> },
+    { title: 'Candles', href: '/admin/candles', icon: <Receipt size={28} /> }];
     return (
         <>
             <div className="w-full sticky top-0 z-50 px-4 border-b">

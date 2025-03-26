@@ -54,9 +54,10 @@ export async function GET(request: NextRequest) {
                 price: true,
                 weight: true,
                 slug: true,
+                featured: true,
+                createdAt: true,
             },
             orderBy: [
-                { featured: 'desc' },
                 { createdAt: 'desc' },
             ]
         })

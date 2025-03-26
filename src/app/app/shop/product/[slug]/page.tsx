@@ -116,7 +116,7 @@ export default function ProductPage() {
 
           {candle.features && candle.features.length > 0 && (
             <div className="space-y-4">
-              <h3 className="font-medium">Features:</h3>
+              <h3 className="font-medium">Особливості:</h3>
               <ul className="list-disc pl-5 space-y-1">
                 {candle.features.map((feature, index) => (
                   <li key={index}>{feature}</li>
@@ -140,10 +140,10 @@ export default function ProductPage() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="flex-1">
-                Add to Cart
+                Додати в корзину
               </Button>
               <Button size="lg" variant="outline" className="flex-1">
-                <Heart className="mr-2 h-4 w-4" /> Add to Wishlist
+                <Heart className="mr-2 h-4 w-4" /> Додати до списку бажань
               </Button>
             </div>
           </div>
@@ -152,8 +152,8 @@ export default function ProductPage() {
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span>Weight:</span>
-              <span>{candle.weight.toString()}g</span>
+              <span>Вага:</span>
+              <span>{candle.weight.toString()}г</span>
             </div>
           </div>
 
@@ -164,22 +164,23 @@ export default function ProductPage() {
               <TabsTrigger value="reviews">Відгуки</TabsTrigger>
             </TabsList>
             <TabsContent value="description" className="pt-4">
+              {candle.description && candle.description.length > 0 && <p className="mb-4">
+                {candle.description}
+              </p>}
               <p>
-                {candle.description || ""}
-              </p>
-              <p className="mt-4">
-                Each candle is made from high-quality wax that ensures a clean, even burn with minimal dripping. The
-                natural cotton wick provides a steady flame and enhances the overall burning experience.
+                {"Кожна свічка зроблена з високоякісного віску, що гарантує безпечне горіння.\n"}
+                {"Дерев'яний та бавовняний гніт забеспучує рівномірне горіння, а дерев'яний гніт ще й надає свічці атмосферні звуки потріскування."}
               </p>
             </TabsContent>
             <TabsContent value="shipping" className="pt-4">
               <p>
-                We ship all orders within 1-2 business days. Standard shipping typically takes 3-5 business days, while
-                express shipping options are available at checkout for faster delivery.
+                Ми відправляємо всі замовлення протягом 1-2 днів. Ми користуємось послугами Нової Пошти для доставки замовлень по Україні.
               </p>
               <p className="mt-4">
-                All candles are carefully packaged to ensure they arrive in perfect condition. For orders over ₴50,
-                shipping is free within the continental United States.
+                Всі свічки акуратно упаковуються, що гарантує їх прибуття в ідеальному стані.
+              </p>
+              <p className="mt-4">
+                При оплаті замовлення наложеним платежем, береться передоплата в розмірі 150 грн, яка не повертається у випадку відмови від замовлення.
               </p>
             </TabsContent>
             <TabsContent value="reviews" className="pt-4">

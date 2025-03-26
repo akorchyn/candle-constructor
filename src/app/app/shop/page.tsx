@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Search } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,28 +21,54 @@ type Candle = {
     imageUrl?: string
     status: string
     slug: string
+    featured: boolean
+    createdAt: number
 }
 
-export default function ShopPage() {
+function Page() {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
     // State for candles and loading
     const [candles, setCandles] = useState<Candle[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+
     const { data: categories } = useCategories()
 
-    // State for filters
-    const [minPrice, setMinPrice] = useState<string>("")
-    const [maxPrice, setMaxPrice] = useState<string>("")
-    const [search, setSearch] = useState("")
-    const [sort, setSort] = useState("featured")
-    const [selectedCategories, setSelectedCategories] = useState<number[]>([])
+    // Initialize state from URL parameters
+    const [minPrice, setMinPrice] = useState<string>(searchParams.get("minPrice") || "")
+    const [maxPrice, setMaxPrice] = useState<string>(searchParams.get("maxPrice") || "")
+    const [search, setSearch] = useState(searchParams.get("search") || "")
+    const [sort, setSort] = useState(searchParams.get("sort") || "featured")
+    const [selectedCategories, setSelectedCategories] = useState<number[]>(
+        searchParams.get("categories") ? searchParams.get("categories")!.split(",").map(Number) : []
+    )
 
-    // Fetch candles on initial load
+    // Update URL with current filters
+    const updateUrlParams = (params: Record<string, string | null>) => {
+        const url = new URL(window.location.href)
+        Object.entries(params).forEach(([key, value]) => {
+            if (value) {
+                url.searchParams.set(key, value)
+            } else {
+                url.searchParams.delete(key)
+            }
+        })
+        router.push(url.pathname + url.search)
+    }
+
+    // Fetch candles on initial load and when URL params change
     useEffect(() => {
         const loadData = async () => {
             try {
                 setLoading(true)
-                const candlesData = await fetchShopCandles()
+                const candlesData = await fetchShopCandles({
+                    minPrice: minPrice ? parseFloat(minPrice) : undefined,
+                    maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
+                    search: search || undefined,
+                    categoryIds: selectedCategories.length ? selectedCategories : undefined
+                })
                 setCandles(candlesData)
                 setError(null)
             } catch (err) {
@@ -53,52 +80,36 @@ export default function ShopPage() {
         }
 
         loadData()
-    }, [])
+    }, [searchParams])
 
     // Apply filters
-    const applyFilters = async () => {
-        try {
-            setLoading(true)
-            const filteredCandles = await fetchShopCandles({
-                minPrice: minPrice ? parseFloat(minPrice) : undefined,
-                maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
-                search: search || undefined,
-                categoryIds: selectedCategories.length ? selectedCategories : undefined
-            })
-            setCandles(filteredCandles)
-        } catch (err) {
-            setError("Failed to apply filters. Please try again.")
-            console.error(err)
-        } finally {
-            setLoading(false)
-        }
+    const applyFilters = () => {
+        updateUrlParams({
+            minPrice: minPrice || null,
+            maxPrice: maxPrice || null,
+            search: search || null,
+            sort,
+            categories: selectedCategories.length ? selectedCategories.join(",") : null
+        })
     }
 
     // Reset all filters
-    const resetFilters = async () => {
+    const resetFilters = () => {
         setMinPrice("")
         setMaxPrice("")
         setSearch("")
         setSort("featured")
         setSelectedCategories([])
-
-        try {
-            setLoading(true)
-            const candlesData = await fetchShopCandles()
-            setCandles(candlesData)
-        } catch (err) {
-            setError("Failed to reset filters. Please try again.")
-            console.error(err)
-        } finally {
-            setLoading(false)
-        }
+        router.push(window.location.pathname)
     }
 
     // Sort candles based on selected sort option
     const sortedCandles = [...candles].sort((a, b) => {
         switch (sort) {
+            case "featured":
+                return a.featured ? -1 : 1
             case "newest":
-                return 0 // Would need createdAt field
+                return a.createdAt - b.createdAt
             case "price-low":
                 return a.price - b.price
             case "price-high":
@@ -108,13 +119,25 @@ export default function ShopPage() {
         }
     })
 
+    // Update sort and URL
+    const handleSortChange = (value: string) => {
+        setSort(value)
+        updateUrlParams({ ...Object.fromEntries(searchParams.entries()), sort: value })
+    }
+
     // Add category toggle handler
     const toggleCategory = (categoryId: number) => {
         setSelectedCategories(prev => {
-            if (prev.includes(categoryId)) {
-                return prev.filter(id => id !== categoryId)
-            }
-            return [...prev, categoryId]
+            const newCategories = prev.includes(categoryId)
+                ? prev.filter(id => id !== categoryId)
+                : [...prev, categoryId]
+
+            updateUrlParams({
+                ...Object.fromEntries(searchParams.entries()),
+                categories: newCategories.length ? newCategories.join(",") : null
+            })
+
+            return newCategories
         })
     }
 
@@ -130,11 +153,19 @@ export default function ShopPage() {
                             placeholder="Пошук свічок..."
                             className="pl-8 w-full"
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={(e) => {
+                                setSearch(e.target.value)
+                                if (!e.target.value) {
+                                    updateUrlParams({
+                                        ...Object.fromEntries(searchParams.entries()),
+                                        search: null
+                                    })
+                                }
+                            }}
                             onKeyDown={(e) => e.key === 'Enter' && applyFilters()}
                         />
                     </div>
-                    <Select value={sort} onValueChange={setSort}>
+                    <Select value={sort} onValueChange={handleSortChange}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Сортувати за" />
                         </SelectTrigger>
@@ -150,7 +181,7 @@ export default function ShopPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 <div className="lg:col-span-1">
-                    <div className="sticky top-4 space-y-6 bg-background p-4 rounded-lg border">
+                    <div className="sticky top-24 space-y-6 bg-background p-4 rounded-lg border">
                         <div>
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="font-medium text-lg">Фільтри</h3>
@@ -168,7 +199,15 @@ export default function ShopPage() {
                                         type="number"
                                         placeholder="Мін"
                                         value={minPrice}
-                                        onChange={(e) => setMinPrice(e.target.value)}
+                                        onChange={(e) => {
+                                            setMinPrice(e.target.value)
+                                            if (!e.target.value) {
+                                                updateUrlParams({
+                                                    ...Object.fromEntries(searchParams.entries()),
+                                                    minPrice: null
+                                                })
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div>
@@ -176,7 +215,15 @@ export default function ShopPage() {
                                         type="number"
                                         placeholder="Макс"
                                         value={maxPrice}
-                                        onChange={(e) => setMaxPrice(e.target.value)}
+                                        onChange={(e) => {
+                                            setMaxPrice(e.target.value)
+                                            if (!e.target.value) {
+                                                updateUrlParams({
+                                                    ...Object.fromEntries(searchParams.entries()),
+                                                    maxPrice: null
+                                                })
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -223,23 +270,24 @@ export default function ShopPage() {
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {sortedCandles.map((candle) => (
-                                <Card key={candle.id} className="overflow-hidden group">
-                                    <div className="relative aspect-square">
-                                        <Image
-                                            src={candle.imageUrl || "/placeholder.svg?height=300&width=300"}
-                                            alt={candle.name}
-                                            fill
-                                            className="object-cover transition-transform group-hover:scale-105"
-                                        />
-                                    </div>
-                                    <CardContent className="p-4">
-                                        <Link href={`/app/shop/product/${candle.slug}`} className="block">
+                                <Card key={candle.id} className="overflow-hidden group" >
+                                    <Link href={`/app/shop/product/${candle.slug}`} className="block">
+
+                                        <div className="relative aspect-square">
+                                            <Image
+                                                src={candle.imageUrl || "/placeholder.svg?height=300&width=300"}
+                                                alt={candle.name}
+                                                fill
+                                                className="object-cover transition-transform group-hover:scale-105"
+                                            />
+                                        </div>
+                                        <CardContent className="p-4">
                                             <h3 className="font-medium text-lg mb-2 line-clamp-1">{candle.name}</h3>
                                             <p className="font-bold">₴{Number(candle.price).toFixed(2)}</p>
-                                        </Link>
-                                    </CardContent>
+                                        </CardContent>
+                                    </Link>
                                     <CardFooter className="p-4 pt-0">
-                                        <Button className="w-full">Додати в кошик</Button>
+                                        <Button className="w-full">Додати в корзину</Button>
                                     </CardFooter>
                                 </Card>
                             ))}
@@ -251,3 +299,10 @@ export default function ShopPage() {
     )
 }
 
+export default function ShopPage() {
+    return (
+        <Suspense>
+            <Page />
+        </Suspense>
+    )
+}

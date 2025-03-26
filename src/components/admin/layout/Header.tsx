@@ -1,9 +1,9 @@
 "use client"
 
 import Link from 'next/link';
-import Navigation from './Navigation'
+import Navigation from '@/components/Navigation'
 import { Tag, Receipt, PuzzlePiece } from "@phosphor-icons/react";
-import { Button } from '../../ui/button';
+import { Button } from '@/components/ui/button';
 import { authClient } from "@/lib/auth-client"
 import { useRouter } from 'next/navigation';
 

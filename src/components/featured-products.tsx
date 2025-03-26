@@ -96,7 +96,7 @@ export default function FeaturedProducts() {
                                 </Link>
                             </CardContent>
                             <CardFooter className="p-4 pt-0">
-                                <Button className="w-full">Додати в кошик</Button>
+                                <Button className="w-full">Додати в корзину</Button>
                             </CardFooter>
                         </Card>
                     ))}

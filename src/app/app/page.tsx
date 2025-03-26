@@ -1,30 +1,11 @@
-import Link from "next/link"
-
-import { Button } from "@/components/ui/button"
 import FeaturedProducts from "@/components/featured-products"
 import CategorySection from "@/components/category-section"
+import HeroSlider from "@/components/hero-slider"
 
 export default function Home() {
     return (
         <div className="flex flex-col min-h-screen">
-            <section className="py-12 md:py-20 bg-muted">
-                <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-                        Свічки ручної роботи для будь-якої нагоди
-                    </h1>
-                    <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-                        Відкрийте для себе нашу колекцію преміальних свічок, виготовлених з натуральних інгредієнтів та любов&apos;ю.
-                    </p>
-                    <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <Button size="lg" asChild>
-                            <Link href="/app/shop">До магазину</Link>
-                        </Button>
-                        <Button size="lg" variant="outline" asChild>
-                            <Link href="/app/categories">Переглянути категорії</Link>
-                        </Button>
-                    </div>
-                </div>
-            </section>
+            <HeroSlider />
 
             <FeaturedProducts />
 

@@ -1,8 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // eslint: {
+  //   dirs: ["."],
+  // },
+  poweredByHeader: false,
+  trailingSlash: true,
+  // reactStrictMode: true,
   images: {
-    domains: ['utfs.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'utfs.io',
+      },
+    ],
   },
   typescript: {
     ignoreBuildErrors: true,

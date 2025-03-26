@@ -8,7 +8,9 @@ export default function RootLayout({
 }) {
     return (
         <main className="min-h-svh flex flex-col">
-            <Header />
+            <div className="sticky top-0 z-50">
+                <Header />
+            </div>
             {children}
 
             <div className="mt-auto">

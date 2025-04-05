@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import MultiImageUpload, { ImageItem } from "@/components/admin/candles/MultiImageLoader"
 import { slugify } from "@/lib/utils"
+import { CombinedImageInput } from '@/components/ui/combined-image-input'
 
 export interface CandleCategoryFormData {
     name: string
@@ -101,9 +102,9 @@ export function CandleCategoryFormDialog({
 
                     <div className="space-y-2">
                         <Label>Images</Label>
-                        <MultiImageUpload
-                            value={formData.images || []}
-                            onChange={(images) => setFormData(prev => ({ ...prev, images }))}
+                        <CombinedImageInput
+                            value={formData.imageUrl || ''}
+                            onChange={(imageUrl) => setFormData(prev => ({ ...prev, imageUrl }))}
                         />
                     </div>
 

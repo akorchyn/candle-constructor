@@ -4,10 +4,22 @@ import { prisma } from '@/lib/db'
 export async function GET() {
     try {
         const categories = await prisma.candleCategory.findMany({
-            orderBy: { name: 'asc' }
+            orderBy: { name: 'asc' },
+            include: {
+                _count: {
+                    select: {
+                        candles: true
+                    }
+                }
+            }
         })
 
-        return NextResponse.json(categories)
+        const categoriesWithCandlesCount = categories.map(category => ({
+            ...category,
+            productCount: category._count.candles
+        }))
+
+        return NextResponse.json(categoriesWithCandlesCount)
     } catch (error) {
         console.error('Failed to fetch categories:', error)
         return NextResponse.json(

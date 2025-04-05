@@ -30,7 +30,7 @@ export function CombinedImageInput({
         <div className="space-y-4">
             {value && (
                 <div className="relative w-40 h-40 mx-auto">
-                    <Image
+                    <img
                         src={value}
                         alt="Preview"
                         className="object-cover rounded-lg"

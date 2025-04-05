@@ -179,16 +179,14 @@ function Page() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 ">
                 <div className="lg:col-span-1">
                     <div className="sticky top-24 space-y-6 bg-background p-4 rounded-lg border">
-                        <div>
-                            <div className="flex items-center justify-between mb-4">
-                                <h3 className="font-medium text-lg">Фільтри</h3>
-                                <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={resetFilters}>
-                                    Скинути все
-                                </Button>
-                            </div>
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="font-medium text-lg">Фільтри</h3>
+                            <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={resetFilters}>
+                                Скинути все
+                            </Button>
                         </div>
 
                         <div className="space-y-4">
@@ -254,7 +252,7 @@ function Page() {
                     </div>
                 </div>
 
-                <div className="lg:col-span-3">
+                <div className="lg:col-span-2 xl:col-span-3">
                     {loading ? (
                         <div className="flex justify-center items-center h-64">
                             <p>Завантаження свічок...</p>
@@ -268,7 +266,7 @@ function Page() {
                             <p>Не знайдено свічок за вашими критеріями.</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                             {sortedCandles.map((candle) => (
                                 <Card key={candle.id} className="overflow-hidden group" >
                                     <Link href={`/app/shop/product/${candle.slug}`} className="block">

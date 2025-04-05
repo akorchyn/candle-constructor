@@ -14,13 +14,9 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { slugify } from '@/lib/utils'
 import { CandleCategoryFormDialog, CandleCategoryFormData } from './CandleCategoryFormDialog'
 import { ImageItem } from '@/components/admin/candles/MultiImageLoader'
+import Image from 'next/image'
 
 interface CandleCategory {
     id: number
@@ -154,15 +150,20 @@ export function CandleCategoriesSection() {
                         {searchResults.map((category) => (
                             <div key={category.id} className="p-6 flex justify-between items-center">
                                 <div className="flex items-center gap-4">
-                                    {category.images?.[0]?.url && (
-                                        <div className="w-16 h-16 relative rounded-lg overflow-hidden">
-                                            <img
-                                                src={category.images[0].url}
+                                    <div className="relative w-20 h-20 rounded-lg overflow-hidden border">
+                                        {category.imageUrl ? (
+                                            <Image
+                                                src={category.imageUrl}
                                                 alt={category.name}
-                                                className="object-cover w-full h-full"
+                                                fill
+                                                className="object-cover"
                                             />
-                                        </div>
-                                    )}
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                                                No image
+                                            </div>
+                                        )}
+                                    </div>
                                     <div>
                                         <h3 className="text-lg font-medium text-gray-900">{category.name}</h3>
                                         {category.description && (

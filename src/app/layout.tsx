@@ -7,9 +7,8 @@ import { ourFileRouter } from "@/app/api/uploadthing/core";
 import QueryProvider from '@/providers/query-provider'
 import { ThemeProvider } from "@/components/theme-provider"
 
+import "@uploadthing/react/styles.css";
 import "./globals.css"
-
-// import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin", "cyrillic", "cyrillic-ext"] })
 
@@ -25,19 +24,21 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-            <QueryProvider>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    <body className={inter.className}>
+            <head>
+                <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+            </head>
+            <body className={inter.className}>
+                <QueryProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
                         {children}
-                    </body>
-                </ThemeProvider>
-            </QueryProvider>
+                    </ThemeProvider>
+                </QueryProvider>
+            </body>
         </html>
     )
 }

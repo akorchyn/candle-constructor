@@ -1,5 +1,4 @@
 import Header from '@/components/admin/layout/Header'
-import "@uploadthing/react/styles.css";
 
 export default function RootLayout({
   children,

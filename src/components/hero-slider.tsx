@@ -6,13 +6,24 @@ import Link from 'next/link'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { Suspense } from 'react'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
-import { cn } from '@/lib/utils'
 
-const slides = [
+interface Slide {
+    id: number
+    image: string
+    title: string
+    description: string
+    buttonText: string
+    buttonLink: string
+    className: string
+}
+
+const slides: Slide[] = [
     {
         id: 1,
         image: '/assets/hero.jpg',
@@ -30,12 +41,10 @@ const slides = [
         buttonText: 'Свічки ручного розпису',
         buttonLink: '/categories/handmade',
         className: 'object-cover object-[100%_75%]'
-
     },
 ]
 
-
-export default function HeroSlider() {
+function HeroSliderContent() {
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
@@ -66,13 +75,13 @@ export default function HeroSlider() {
             >
                 {slides.map((slide) => (
                     <SwiperSlide key={slide.id}>
-                        <div className={"relative w-full h-full"}>
+                        <div className="relative w-full h-full">
                             <Image
                                 src={slide.image}
                                 alt={slide.title}
                                 fill
                                 priority
-                                className={cn("object-cover ", slide.className)}
+                                className={cn("object-cover", slide.className)}
                             />
                             <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-6 text-center">
                                 <h2 className="text-3xl md:text-5xl font-bold mb-4 max-w-3xl">
@@ -92,5 +101,13 @@ export default function HeroSlider() {
                 ))}
             </Swiper>
         </div>
+    )
+}
+
+export default function HeroSlider() {
+    return (
+        <Suspense fallback={<div className="aspect-[16/9] md:aspect-[21/9] bg-gray-200 animate-pulse" />}>
+            <HeroSliderContent />
+        </Suspense>
     )
 } 

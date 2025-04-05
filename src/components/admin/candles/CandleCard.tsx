@@ -108,7 +108,7 @@ export function CandleCard({
                                 </div>
                             </div>
                         )}
-                        <p className="text-xs text-gray-500">Weight: {weight.toNumber()}g</p>
+                        <p className="text-xs text-gray-500">Weight: {Number(weight)}g</p>
                     </div>
                     <Button
                         variant="outline"

@@ -1,58 +1,37 @@
-"use client"
-
 import Link from 'next/link';
-import Navigation from '@/components/Navigation'
-import { Tag, Receipt, PuzzlePiece } from "@phosphor-icons/react";
-import { Button } from '@/components/ui/button';
-import { authClient } from "@/lib/auth-client"
-import { useRouter } from 'next/navigation';
+import Navigation from '@/components/navigation'
+import { ThemeToggle } from '@/components/theme-toggle';
+import { Tag, Receipt, PuzzleIcon } from "lucide-react";
+import SignOutButton from '@/components/button/signOutButton';
 
 
 export default function Header() {
-    const { data: session } = authClient.useSession();
-    const router = useRouter();
-
-    const isAllowed = session?.user?.role === 'admin';
-
     const navigation = [{ title: 'Categories', href: '/admin/categories', icon: <Tag size={28} /> },
-    { title: 'Components', href: '/admin/components', icon: <PuzzlePiece size={28} /> },
+    { title: 'Components', href: '/admin/components', icon: <PuzzleIcon size={28} /> },
     { title: 'Candles', href: '/admin/candles', icon: <Receipt size={28} /> }];
+
     return (
-        <>
-            <div className="w-full sticky top-0 z-50 px-4 border-b">
-                <div className="flex w-full items-center justify-between bg-white py-[8px] md:gap-x-[24px] gap-x-[16px]">
-                    <Link className="flex flex-shrink-0 items-center" href="/">
-                        <span className="text-xl font-bold text-gray-800">Arglow.candles</span>
-                    </Link>
-                    {isAllowed &&
-                        <div className="md:flex w-full hidden">
-                            <Navigation
-                                links={navigation} mobile={false}
-                            />
-                        </div>
-                    }
-                    {isAllowed &&
-                        <Button variant="default" className='max-w-[100px]' onClick={() => authClient.signOut({
-                            fetchOptions: {
-                                onSuccess: () => {
-                                    router.push("/login"); // redirect to login page
-                                },
-                            },
-                        })}>
-                            Logout
-                        </Button>
-                    }
+        <header className="border-b bg-background w-full">
+            <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+
+                <Link href="/app" className="text-xl font-bold">
+                    ArtGlow.candles
+                </Link>
+                <div className="w-full hidden md:flex">
+                    <Navigation
+                        links={navigation} mobile={false}
+                    />
                 </div>
-
-            </div >
-
-
-            {isAllowed && (
-                <div className="md:hidden flex w-full">
-                    <Navigation links={navigation} mobile={true} />
+                <div className="flex items-center space-x-4">
+                    <ThemeToggle />
+                    <SignOutButton />
                 </div>
-            )
-            }
-        </>
+            </div>
+
+
+            <div className="flex w-full md:hidden">
+                <Navigation links={navigation} mobile={true} />
+            </div>
+        </header >
     )
 }

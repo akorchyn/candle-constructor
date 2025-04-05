@@ -57,7 +57,7 @@ export default function RecipePage() {
             updateCandleRecipe(Number(params.id), data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['candle', params.id] })
-            router.push('/candles')
+            router.push('/admin/candles')
         }
     })
 

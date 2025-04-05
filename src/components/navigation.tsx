@@ -2,14 +2,28 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function Navigation({ links, mobile }: { links: { title: string, href: string, icon?: React.ReactNode, hideMobile?: boolean, hideDesktop?: boolean }[], mobile: boolean }) {
-    const page = usePathname();
+interface NavigationLink {
+    title: string
+    href: string
+    icon?: React.ReactNode
+    hideMobile?: boolean
+    hideDesktop?: boolean
+}
+
+interface NavigationProps {
+    links: NavigationLink[]
+    mobile: boolean
+}
+
+function NavigationContent({ links, mobile }: NavigationProps) {
+    const page = usePathname()
 
     return (
         <>
             {mobile ? (
-                <nav className="flex bg-white h-[70px]  border-t-[1px] w-full fixed bottom-0 z-10 items-center justify-around px-3">
+                <nav className="flex bg-white h-[70px] border-t-[1px] w-full fixed bottom-0 z-10 items-center justify-around px-3">
                     {links.filter(link => !link.hideMobile).map((link, index) => (
                         <Link
                             key={index}
@@ -28,8 +42,8 @@ export default function Navigation({ links, mobile }: { links: { title: string, 
                         <Link
                             key={index}
                             className={`rounded-full p-2 px-5 ${page === link.href
-                                ? "bg-[#2f302d] text-white"
-                                : "hover:bg-[#2f302d] hover:text-white"
+                                    ? "bg-[#2f302d] text-white"
+                                    : "hover:bg-[#2f302d] hover:text-white"
                                 }`}
                             href={link.href}
                         >
@@ -39,5 +53,13 @@ export default function Navigation({ links, mobile }: { links: { title: string, 
                 </nav>
             )}
         </>
-    );
-};
+    )
+}
+
+export default function Navigation(props: NavigationProps) {
+    return (
+        <Suspense fallback={<div className="h-[70px]" />}>
+            <NavigationContent {...props} />
+        </Suspense>
+    )
+} 

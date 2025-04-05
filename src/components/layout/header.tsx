@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { ShoppingBasket, ShoppingCart, Tag } from "lucide-react";
-import Navigation from "../Navigation";
+import Navigation from "../navigation";
 import { ThemeToggle } from "../theme-toggle";
 
 export default function Header() {

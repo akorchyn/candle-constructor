@@ -3,6 +3,11 @@ import { useQuery } from '@tanstack/react-query'
 interface Category {
     id: number
     name: string
+    slug: string
+    imageUrl: string
+    featured: boolean
+    description: string
+    productCount: number
 }
 
 export function useCategories() {

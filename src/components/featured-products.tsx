@@ -85,6 +85,7 @@ export default function FeaturedProducts() {
                                     src={product.imageUrl || "/placeholder.svg"}
                                     alt={product.name}
                                     fill
+                                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                                     className="object-cover transition-transform group-hover:scale-105"
                                 />
                                 {product.status === "new" && <Badge className="absolute top-2 right-2">New</Badge>}

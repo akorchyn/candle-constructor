@@ -5,7 +5,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { fetchCategories, createCategory, updateCategory, deleteCategory } from '@/lib/api'
-import { CategoryFormDialog } from '@/components/admin/categories/CategoryFormDialog'
+import { CategoryFormData, CategoryFormDialog } from '@/components/admin/categories/CategoryFormDialog'
 import { Search } from '@/components/ui/search'
 import {
     AlertDialog,
@@ -21,13 +21,8 @@ import {
 interface Category {
     id: number
     name: string
-    description: string | null
+    description?: string
     materials: number[]
-}
-
-interface CategoryFormData {
-    name: string
-    description?: string | null
 }
 
 const CATEGORY_SEARCH_FIELDS = ['name', 'description'] as (keyof Category)[]

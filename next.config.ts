@@ -1,12 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // eslint: {
-  //   dirs: ["."],
-  // },
+  eslint: {
+    dirs: ["src"],
+  },
   poweredByHeader: false,
   trailingSlash: true,
-  // reactStrictMode: true,
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
@@ -14,9 +14,6 @@ const nextConfig: NextConfig = {
         hostname: 'utfs.io',
       },
     ],
-  },
-  typescript: {
-    ignoreBuildErrors: true,
   },
   experimental: {
     nodeMiddleware: true,

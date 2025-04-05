@@ -52,7 +52,7 @@ export function MaterialCard({
                 </div>
             </div>
             <CardContent className="p-4">
-                <p className="text-xs font-medium text-right">{parseFloat(pricePerUnit).toFixed(2)} per {units}</p>
+                <p className="text-xs font-medium text-right">{pricePerUnit.toFixed(2)} per {units}</p>
                 <h3 className="font-medium text-lg mt-1">{name}</h3>
             </CardContent>
             <CardFooter className="p-4 pt-0 mt-auto">

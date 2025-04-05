@@ -1,4 +1,4 @@
-import { Candle } from "@prisma/client"
+import { CandleFormData } from "@/components/admin/candles/CandleFormDialog"
 
 // src/lib/api.ts
 export async function fetchMaterials() {
@@ -51,7 +51,7 @@ export async function fetchCandles() {
     return response.json()
 }
 
-export async function createCandle(data: Candle) {
+export async function createCandle(data: CandleFormData) {
     console.log(data);
     const response = await fetch('/api/admin/candles', {
         method: 'POST',
@@ -62,7 +62,7 @@ export async function createCandle(data: Candle) {
     return response.json()
 }
 
-export async function updateCandle(id: number, data: Candle) {
+export async function updateCandle(id: number, data: CandleFormData) {
     const response = await fetch(`/api/admin/candles/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

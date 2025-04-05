@@ -3,8 +3,10 @@ import { prisma } from '@/lib/db'
 
 export async function GET(
     request: Request,
-    { params }: { params: { slug: string } }
+    props: { params: Promise<{ slug: string }> }
 ) {
+    const params = await props.params;
+
     try {
         const category = await prisma.candleCategory.findUnique({
             where: { slug: params.slug },

@@ -2,27 +2,12 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-
-interface Recipe {
-    materialId: number
-    amountUsed: number
-    material: {
-        pricePerUnit: number
-    }
-}
+import { CandleWithImagesAndRecipes } from "@/app/admin/candles/page"
+import { CandleImage } from "@prisma/client"
 
 interface CandleCardProps {
-    id: number
-    name: string
-    description?: string
-    price: number
-    weight: number
-    aromaPercent: number
-    aromaPrice: number
-    aromatedPrice: number
-    status: 'DRAFT' | 'ACTIVE' | 'DISCONTINUED'
-    imageUrl?: string | null
-    recipes: Recipe[]
+    candle: CandleWithImagesAndRecipes
+
     onEdit: (id: number) => void
     onDelete: (id: number) => void
     onManageRecipe: (id: number) => void
@@ -37,25 +22,29 @@ const statusColors = {
 const PRICE_MULTIPLIER = 2.5
 
 export function CandleCard({
-    id,
-    name,
-    description,
-    price,
-    weight,
-    aromaPercent,
-    aromaPrice,
-    aromatedPrice,
-    status,
-    imageUrl,
-    recipes,
+    candle,
     onEdit,
     onDelete,
     onManageRecipe
 }: CandleCardProps) {
+    const { id,
+        name,
+        description,
+        price,
+        weight,
+        aromaPercent,
+        aromaPrice,
+        aromatedPrice,
+        status,
+        images,
+        recipes } = candle
+
+    const imageUrl = images.find((image: CandleImage) => image.isPrimary)?.url
+
     const totalCost = recipes.reduce((sum, recipe) => {
-        return sum + (recipe.amountUsed * recipe.material.pricePerUnit)
+        return sum + (Number(recipe.amountUsed) * Number(recipe.material.pricePerUnit))
     }, 0)
-    const aromaCost = (aromaPercent / 100) * weight * aromaPrice;
+    const aromaCost = (Number(aromaPercent) / 100) * Number(weight) * Number(aromaPrice);
 
     const recommendedPrice = totalCost * PRICE_MULTIPLIER;
     const recommendedPriceWithAroma = (totalCost + aromaCost) * PRICE_MULTIPLIER;
@@ -119,7 +108,7 @@ export function CandleCard({
                                 </div>
                             </div>
                         )}
-                        <p className="text-xs text-gray-500">Weight: {weight}g</p>
+                        <p className="text-xs text-gray-500">Weight: {weight.toNumber()}g</p>
                     </div>
                     <Button
                         variant="outline"

@@ -33,7 +33,7 @@ export default function CategoriesPage() {
                         <Card key={category.id} className="overflow-hidden group hover:shadow-md transition-shadow">
                             <div className="relative aspect-[3/2]">
                                 <Image
-                                    src={category.image || "/placeholder.svg"}
+                                    src={category.imageUrl || "/placeholder.svg"}
                                     alt={category.name}
                                     fill
                                     className="object-cover transition-transform group-hover:scale-105"

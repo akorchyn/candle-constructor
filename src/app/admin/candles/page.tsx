@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { CandleCard } from '@/components/admin/candles/CandleCard'
-import { CandleFormDialog } from '@/components/admin/candles/CandleFormDialog'
+import { CandleFormData, CandleFormDialog } from '@/components/admin/candles/CandleFormDialog'
 import { fetchCandles, createCandle, updateCandle, deleteCandle } from '@/lib/api'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -19,21 +19,36 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation'
 import { Search } from '@/components/ui/search'
-import { type Candle } from '@prisma/client'
+import { Material, Review, User, type Candle, type CandleImage, type CandleRecipe } from '@prisma/client'
 
 const CANDLE_SEARCH_FIELDS = ['name', 'description'] as (keyof Candle)[]
+
+export type RecipeWithMaterial = CandleRecipe & {
+    material: Material
+}
+
+export type ReviewWithUser = Review & {
+    user: User
+}
+
+export type CandleWithImagesAndRecipes = Candle & {
+    images: CandleImage[]
+    recipes: RecipeWithMaterial[]
+    reviews?: ReviewWithUser[]
+    aromaPrice: number
+}
 
 export default function CandlesPage() {
     const router = useRouter()
     const [activeTab, setActiveTab] = useState('all')
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-    const [candleToEdit, setCandleToEdit] = useState<Candle | null>(null)
-    const [candleToDelete, setCandleToDelete] = useState<Candle | null>(null)
-    const [searchResults, setSearchResults] = useState<Candle[]>([])
+    const [candleToEdit, setCandleToEdit] = useState<CandleWithImagesAndRecipes | null>(null)
+    const [candleToDelete, setCandleToDelete] = useState<CandleWithImagesAndRecipes | null>(null)
+    const [searchResults, setSearchResults] = useState<CandleWithImagesAndRecipes[]>([])
 
     const queryClient = useQueryClient()
 
-    const { data: candles, isLoading } = useQuery<Candle[]>({
+    const { data: candles, isLoading } = useQuery<CandleWithImagesAndRecipes[]>({
         queryKey: ['candles'],
         queryFn: fetchCandles
     })
@@ -46,7 +61,7 @@ export default function CandlesPage() {
     })
 
     const updateMutation = useMutation({
-        mutationFn: ({ id, data }: { id: number; data: Omit<Candle, 'id' | 'recipes'> }) =>
+        mutationFn: ({ id, data }: { id: number; data: CandleFormData }) =>
             updateCandle(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['candles'] })
@@ -65,12 +80,12 @@ export default function CandlesPage() {
         return candle.status.toLowerCase() === activeTab
     })
 
-    const handleCreateSubmit = async (data: Omit<Candle, 'id' | 'recipes'>) => {
+    const handleCreateSubmit = async (data: CandleFormData) => {
         await createMutation.mutateAsync(data)
         setIsCreateDialogOpen(false)
     }
 
-    const handleEditSubmit = async (data: Omit<Candle, 'id' | 'recipes'>) => {
+    const handleEditSubmit = async (data: CandleFormData) => {
         if (candleToEdit) {
             await updateMutation.mutateAsync({ id: candleToEdit.id, data })
             setCandleToEdit(null)
@@ -88,7 +103,7 @@ export default function CandlesPage() {
         router.push(`/admin/candles/${id}/recipe`)
     }
 
-    const handleSearch = useCallback((results: Candle[]) => {
+    const handleSearch = useCallback((results: CandleWithImagesAndRecipes[]) => {
         setSearchResults(results)
     }, [])
 
@@ -140,8 +155,7 @@ export default function CandlesPage() {
                             {filteredCandles.map((candle) => (
                                 <CandleCard
                                     key={candle.id}
-                                    {...candle}
-                                    imageUrl={candle.images.find(image => image.isPrimary)?.url}
+                                    candle={candle}
                                     onEdit={() => setCandleToEdit(candle)}
                                     onDelete={() => setCandleToDelete(candle)}
                                     onManageRecipe={handleManageRecipe}
@@ -176,7 +190,7 @@ export default function CandlesPage() {
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
                             This will permanently delete the candle &quot;{candleToDelete?.name}&quot;.
-                            {candleToDelete?.recipes.length > 0 && (
+                            {candleToDelete?.recipes.length && candleToDelete?.recipes.length > 0 && (
                                 <>
                                     <br /><br />
                                     <strong className="text-red-600">

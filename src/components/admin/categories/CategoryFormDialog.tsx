@@ -7,9 +7,9 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 
-interface CategoryFormData {
+export interface CategoryFormData {
     name: string
-    description?: string | null
+    description?: string
 }
 
 interface CategoryFormDialogProps {

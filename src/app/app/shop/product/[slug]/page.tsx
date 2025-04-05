@@ -10,14 +10,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import RelatedProducts from "@/components/related-products"
 import { fetchCandleDetails } from "@/lib/user-api"
-import { Candle } from "@prisma/client"
 import Review from "@/components/review"
+import { CandleWithImagesAndRecipes } from "@/app/admin/candles/page"
 
 export default function ProductPage() {
   const params = useParams()
   const slug = typeof params.slug === 'string' ? params.slug : ''
 
-  const [candle, setCandle] = useState<Candle | null>(null)
+  const [candle, setCandle] = useState<CandleWithImagesAndRecipes | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1);
@@ -95,7 +95,7 @@ export default function ProductPage() {
               >
                 <Image
                   src={image.url}
-                  alt={image.alt}
+                  alt={`${candle.name} image ${index + 1}`}
                   fill
                   className="object-cover"
                 />
@@ -184,11 +184,11 @@ export default function ProductPage() {
               </p>
             </TabsContent>
             <TabsContent value="reviews" className="pt-4">
-              {candle.reviews.length === 0 && (
+              {candle.reviews?.length === 0 && (
                 <p>Ще немає відгуків</p>
               )}
               <div className="space-y-4">
-                {candle.reviews.map((review) => (
+                {candle.reviews?.map((review) => (
                   <Review key={review.id} review={review} user={review.user} />
                 ))}
               </div>

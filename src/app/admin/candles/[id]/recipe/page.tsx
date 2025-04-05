@@ -9,15 +9,7 @@ import { fetchCandle, fetchMaterials, updateCandleRecipe } from '@/lib/api'
 import { useParams, useRouter } from 'next/navigation'
 import { Separator } from "@/components/ui/separator"
 import { Search } from '@/components/ui/search'
-
-interface Material {
-    id: number
-    name: string
-    units: string
-    pricePerUnit: number
-    categoryId: number
-    imageUrl?: string | null
-}
+import { Material } from '@prisma/client'
 
 interface RecipeItem {
     materialId: number
@@ -171,7 +163,7 @@ export default function RecipePage() {
                         {activeMaterials.map((material: Material) => (
                             <RecipeMaterialCard
                                 key={material.id}
-                                {...material}
+                                material={material}
                                 amount={getAmountForMaterial(material.id)}
                                 isInRecipe={recipe.some(item => item.materialId === material.id)}
                                 onAmountChange={handleAmountChange}
@@ -195,9 +187,11 @@ export default function RecipePage() {
                             {(categoryMaterials as Material[]).map((material: Material) => (
                                 <RecipeMaterialCard
                                     key={material.id}
-                                    {...material}
+                                    material={material}
                                     amount={getAmountForMaterial(material.id)}
                                     onAmountChange={handleAmountChange}
+                                    isInRecipe={false}
+                                    onRemove={handleRemove}
                                 />
                             ))}
                         </div>

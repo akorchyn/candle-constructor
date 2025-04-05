@@ -5,7 +5,7 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import QueryProvider from '@/providers/query-provider'
-
+import { ThemeProvider } from "@/components/theme-provider"
 
 import "./globals.css"
 
@@ -24,12 +24,19 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             <QueryProvider>
-                <body className={inter.className}>
-                    {children}
-                </body>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <body className={inter.className}>
+                        {children}
+                    </body>
+                </ThemeProvider>
             </QueryProvider>
         </html>
     )

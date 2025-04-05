@@ -71,8 +71,8 @@ export default function HeroSlider() {
                                 src={slide.image}
                                 alt={slide.title}
                                 fill
+                                priority
                                 className={cn("object-cover ", slide.className)}
-                                priority={slide.id === 1}
                             />
                             <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-6 text-center">
                                 <h2 className="text-3xl md:text-5xl font-bold mb-4 max-w-3xl">

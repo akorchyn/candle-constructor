@@ -58,7 +58,7 @@ export async function POST(request: Request) {
                 categoryId: json.categoryId,
                 features: json.features || [],
                 images: {
-                    create: json.images.map((image) => ({
+                    create: json.images.map((image: { url: string, alt: string, isPrimary: boolean }) => ({
                         url: image.url,
                         alt: image.alt || '',
                         isPrimary: image.isPrimary

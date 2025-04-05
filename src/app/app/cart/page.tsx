@@ -18,6 +18,7 @@ const initialCartItems = [
         price: 300.0,
         quantity: 1,
         image: "/placeholder.svg?height=100&width=100",
+        slug: "riflenaya-malyonka",
     },
     {
         id: 3,

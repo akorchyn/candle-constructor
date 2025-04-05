@@ -23,14 +23,14 @@ interface Material {
     name: string
     units: string
     pricePerUnit: number
-    imageUrl: string | null
+    imageUrl?: string
     categoryId: number
 }
 
 interface Category {
     id: number
     name: string
-    description: string | null
+    description?: string
 }
 
 const MATERIAL_SEARCH_FIELDS = ['name'] as (keyof Material)[]

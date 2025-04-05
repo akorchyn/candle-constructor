@@ -14,8 +14,9 @@ import { slugify } from "@/lib/utils"
 import { useCategories } from "@/hooks/use-categories"
 import SelectCategory from "@/components/admin/candles/SelectCategory"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { CandleWithImagesAndRecipes } from '@/app/admin/candles/page'
 
-interface CandleFormData {
+export interface CandleFormData {
     name: string
     description?: string | null
     price: number
@@ -33,7 +34,7 @@ interface CandleFormData {
     slug: string
     metaTitle?: string
     metaDescription?: string
-    categoryIds: number[]
+    categoryId: number
     images: ImageItem[]
     features: string[]
 }
@@ -42,7 +43,7 @@ interface CandleFormDialogProps {
     open: boolean
     onClose: () => void
     onSubmit: (data: CandleFormData) => Promise<void>
-    initialData?: CandleFormData
+    initialData?: CandleWithImagesAndRecipes
     title: string
 }
 
@@ -68,6 +69,7 @@ export function CandleFormDialog({
         seasonal: false,
         slug: '',
         features: [],
+        categoryId: 0,
     })
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -95,7 +97,21 @@ export function CandleFormDialog({
 
     useEffect(() => {
         if (initialData) {
-            setFormData(initialData)
+            setFormData({
+                name: initialData.name,
+                description: initialData.description,
+                price: initialData.price.toNumber(),
+                aromatedPrice: initialData.aromatedPrice.toNumber(),
+                weight: initialData.weight.toNumber(),
+                aromaPercent: initialData.aromaPercent.toNumber(),
+                images: initialData.images,
+                status: initialData.status,
+                featured: initialData.featured,
+                seasonal: initialData.seasonal,
+                slug: initialData.slug,
+                features: initialData.features,
+                categoryId: initialData.categoryId ?? 0,
+            })
         }
     }, [initialData])
 

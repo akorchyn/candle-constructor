@@ -6,22 +6,22 @@ import { Button } from "@/components/ui/button"
 const categories = [
     {
         id: 1,
-        name: "Decorative Candles",
-        description: "Beautiful candles to enhance your home decor",
+        name: "Декоративні свічки",
+        description: "Красиві свічки для декору вашого будинку",
         image: "/placeholder.svg?height=400&width=600",
         slug: "decorative",
     },
     {
         id: 2,
-        name: "Seasonal Candles",
-        description: "Special candles for holidays and celebrations",
+        name: "Сезонні свічки",
+        description: "Спеціальні свічки для свят і виняткових подій",
         image: "/placeholder.svg?height=400&width=600",
         slug: "seasonal",
     },
     {
         id: 3,
-        name: "Scented Candles",
-        description: "Aromatic candles to create the perfect atmosphere",
+        name: "Ароматні свічки",
+        description: "Свічки, які створюють ідеальну атмосферу",
         image: "/placeholder.svg?height=400&width=600",
         slug: "scented",
     },
@@ -31,7 +31,7 @@ export default function CategorySection() {
     return (
         <section className="py-16">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl font-bold mb-8 text-center">Shop by Category</h2>
+                <h2 className="text-3xl font-bold mb-8 text-center">Наші категорії</h2>
                 <div className="grid md:grid-cols-3 gap-8">
                     {categories.map((category) => (
                         <div key={category.id} className="relative group overflow-hidden rounded-lg">
@@ -46,7 +46,7 @@ export default function CategorySection() {
                                     <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
                                     <p className="mb-4">{category.description}</p>
                                     <Button asChild variant="outline" className="text-white border-white hover:bg-white/20">
-                                        <Link href={`/app/categories/${category.slug}`}>View Collection</Link>
+                                        <Link href={`/app/shop?category=${category.slug}`}>Переглянути</Link>
                                     </Button>
                                 </div>
                             </div>

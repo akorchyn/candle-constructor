@@ -3,13 +3,10 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Plus, Minus, Check } from "lucide-react"
+import { Material } from "@prisma/client"
 
 interface RecipeMaterialCardProps {
-    id: number
-    name: string
-    units: string
-    pricePerUnit: number
-    imageUrl?: string | null
+    material: Material
     amount: number
     isInRecipe: boolean
     onAmountChange: (id: number, amount: number) => void
@@ -17,17 +14,19 @@ interface RecipeMaterialCardProps {
 }
 
 export function RecipeMaterialCard({
-    id,
-    name,
-    units,
-    pricePerUnit,
-    imageUrl,
+    material,
     amount,
     isInRecipe,
     onAmountChange,
     onRemove
 }: RecipeMaterialCardProps) {
-    const pricePerUnitValue = parseFloat(pricePerUnit)
+    const { id,
+        name,
+        units,
+        pricePerUnit,
+        imageUrl,
+    } = material
+    const pricePerUnitValue = Number(pricePerUnit)
     const totalPrice = amount * pricePerUnitValue
 
     const handleAdd = () => {

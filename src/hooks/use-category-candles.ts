@@ -4,6 +4,7 @@ import { CandleCategory } from '@prisma/client'
 interface CandleWithImages {
     id: number
     name: string
+    slug: string
     price: number
     aromatedPrice: number
     images: Array<{

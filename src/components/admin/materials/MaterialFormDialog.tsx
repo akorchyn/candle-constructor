@@ -15,9 +15,9 @@ interface MaterialFormData {
     name: string
     units: string
     pricePerUnit: number
-    imageUrl?: string | null
+    imageUrl?: string
     categoryId: number
-    purchaseUrl?: string | null
+    purchaseUrl?: string
 }
 
 interface MaterialFormDialogProps {
@@ -151,7 +151,7 @@ export function MaterialFormDialog({
                         <Input
                             id="purchaseUrl"
                             value={formData.purchaseUrl || ''}
-                            onChange={(e) => setFormData(prev => ({ ...prev, purchaseUrl: e.target.value == '' ? null : e.target.value }))}
+                            onChange={(e) => setFormData(prev => ({ ...prev, purchaseUrl: e.target.value == '' ? undefined : e.target.value }))}
                         />
                     </div>
 

@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { ShoppingBasket, ShoppingCart, Tag } from "lucide-react";
 import Navigation from "../Navigation";
+import { ThemeToggle } from "../theme-toggle";
 
 export default function Header() {
     const navigation = [{ title: 'Свічки', href: '/app/shop', icon: <ShoppingCart size={28} /> },
@@ -11,7 +12,7 @@ export default function Header() {
     ];
 
     return (
-        <header className="border-b bg-white">
+        <header className="border-b bg-background">
             <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                 <Link href="/app" className="text-xl font-bold">
                     ArtGlow.candles
@@ -22,7 +23,7 @@ export default function Header() {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-
+                    <ThemeToggle />
                     <Link href="/app/cart" className="md:flex w-full hidden">
                         <Button variant="outline" size="icon" className="relative">
                             <ShoppingCart className="h-5 w-5" />

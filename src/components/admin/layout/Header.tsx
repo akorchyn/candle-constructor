@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import Navigation from '@/components/navigation'
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Tag, Receipt, PuzzleIcon } from "lucide-react";
+import { Tag, Receipt, PuzzleIcon, Tags } from "lucide-react";
 import SignOutButton from '@/components/button/signOutButton';
 
 
 export default function Header() {
-    const navigation = [{ title: 'Categories', href: '/admin/categories', icon: <Tag size={28} /> },
-    { title: 'Components', href: '/admin/components', icon: <PuzzleIcon size={28} /> },
-    { title: 'Candles', href: '/admin/candles', icon: <Receipt size={28} /> }];
+    const navigation = [
+        { title: 'Categories', href: '/admin/categories', icon: <Tag size={28} /> },
+        { title: 'Components', href: '/admin/components', icon: <PuzzleIcon size={28} /> },
+        { title: 'Candles', href: '/admin/candles', icon: <Receipt size={28} /> }];
 
     return (
         <header className="border-b bg-background w-full">

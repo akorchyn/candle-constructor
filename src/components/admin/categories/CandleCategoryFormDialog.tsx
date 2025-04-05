@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import MultiImageUpload, { ImageItem } from "@/components/admin/candles/MultiImageLoader"
+import { ImageItem } from "@/components/admin/candles/MultiImageLoader"
 import { slugify } from "@/lib/utils"
 import { CombinedImageInput } from '@/components/ui/combined-image-input'
 

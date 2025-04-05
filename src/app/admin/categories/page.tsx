@@ -1,7 +1,5 @@
-// src/app/categories/page.tsx
 'use client'
 
-import { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MaterialCategoriesSection } from '@/components/admin/categories/MaterialCategoriesSection'
 import { CandleCategoriesSection } from '@/components/admin/categories/CandleCategoriesSection'

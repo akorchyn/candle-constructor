@@ -7,7 +7,6 @@ import { X, Link, Upload } from "lucide-react";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
-import Image from "next/image";
 
 interface CombinedImageInputProps {
     value: string;

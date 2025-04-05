@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Navigation from '@/components/navigation'
 import { ThemeToggle } from '@/components/theme-toggle';
-import { Tag, Receipt, PuzzleIcon, Tags } from "lucide-react";
+import { Tag, Receipt, PuzzleIcon } from "lucide-react";
 import SignOutButton from '@/components/button/signOutButton';
 
 

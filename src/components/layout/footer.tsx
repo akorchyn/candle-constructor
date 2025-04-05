@@ -20,12 +20,12 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/app/categories/seasonal" className="text-muted-foreground hover:text-foreground">
+                                <Link href="/app/categories/hand-made" className="text-muted-foreground hover:text-foreground">
                                     З кастомним дизайном
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/app/categories/seasonal" className="text-muted-foreground hover:text-foreground">
+                                <Link href="/app/categories/scented" className="text-muted-foreground hover:text-foreground">
                                     Ароматизовані
                                 </Link>
                             </li>
